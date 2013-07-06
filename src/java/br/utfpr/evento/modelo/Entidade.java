@@ -31,25 +31,25 @@ public class Entidade implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "ent_id")
+    @Column(name = "id")
     @GeneratedValue(generator="EntidadeGen", strategy= GenerationType.SEQUENCE)
-    private Integer entId;
+    private Integer id;
     
-    @Column(name = "ent_nome")
-    private String entNome;
+    @Column(name = "nome")
+    private String nome;
     
-    @Column(name = "ent_cnpj")
-    private String entCnpj;
+    @Column(name = "cnpj")
+    private String cnpj;
     
-    @Column(name = "ent_email")
-    private String entEmail;
+    @Column(name = "email")
+    private String email;
     
-    @Column(name = "ent_telefone")
-    private String entTelefone;
+    @Column(name = "telefone")
+    private String telefone;
     
-    @Column(name = "ent_datacadastro")
+    @Column(name = "datacadastro")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date entDatacadastro = new Date();
+    private Date dataCadastro = new Date();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "entidade")
     private List<ControleEntrada> controleEntradaList;
@@ -64,11 +64,11 @@ public class Entidade implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "entPai")
     private List<Entidade> entidadeList;
     
-    @JoinColumn(name = "ent_pai", referencedColumnName = "ent_id")
+    @JoinColumn(name = "ent_pai", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Entidade entPai;
     
-    @JoinColumn(name = "end_id", referencedColumnName = "end_id")
+    @JoinColumn(name = "end_id", referencedColumnName = "id")
     @ManyToOne(optional = false, cascade= CascadeType.ALL)
     private Endereco endereco;
     
@@ -83,55 +83,55 @@ public class Entidade implements Serializable {
     }
 
     public Entidade(Integer entId) {
-        this.entId = entId;
+        this.id = entId;
     }
 
     public Integer getEntId() {
-        return entId;
+        return id;
     }
 
     public void setEntId(Integer entId) {
-        this.entId = entId;
+        this.id = entId;
     }
 
     public String getEntNome() {
-        return entNome;
+        return nome;
     }
 
     public void setEntNome(String entNome) {
-        this.entNome = entNome;
+        this.nome = entNome;
     }
 
     public String getEntCnpj() {
-        return entCnpj;
+        return cnpj;
     }
 
     public void setEntCnpj(String entCnpj) {
-        this.entCnpj = entCnpj;
+        this.cnpj = entCnpj;
     }
 
     public String getEntEmail() {
-        return entEmail;
+        return email;
     }
 
     public void setEntEmail(String entEmail) {
-        this.entEmail = entEmail;
+        this.email = entEmail;
     }
 
     public String getEntTelefone() {
-        return entTelefone;
+        return telefone;
     }
 
     public void setEntTelefone(String entTelefone) {
-        this.entTelefone = entTelefone;
+        this.telefone = entTelefone;
     }
 
     public Date getEntDatacadastro() {
-        return entDatacadastro;
+        return dataCadastro;
     }
 
     public void setEntDatacadastro(Date entDatacadastro) {
-        this.entDatacadastro = entDatacadastro;
+        this.dataCadastro = entDatacadastro;
     }
 
     @XmlTransient
@@ -196,7 +196,7 @@ public class Entidade implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (entId != null ? entId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -207,15 +207,10 @@ public class Entidade implements Serializable {
             return false;
         }
         Entidade other = (Entidade) object;
-        if ((this.entId == null && other.entId != null) || (this.entId != null && !this.entId.equals(other.entId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "javaapplication2.Entidade[ entId=" + entId + " ]";
-    }
-    
 }

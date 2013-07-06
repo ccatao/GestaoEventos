@@ -27,7 +27,7 @@ public class PersistenceFactory {
      */
     public static EntityManagerFactory getEntityManagerFactory() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("GerenciamentoEventosPU");
+            emf = Persistence.createEntityManagerFactory("GestaoEventosPU");
         }
         return emf;
     }

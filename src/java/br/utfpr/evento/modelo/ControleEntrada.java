@@ -24,17 +24,17 @@ public class ControleEntrada implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "cte_id")
+    @Column(name = "id")
     @GeneratedValue(generator="ControleEntradaGen", strategy= GenerationType.SEQUENCE)
-    private Integer cteId;
+    private Integer id;
     
-    @Column(name = "cte_entrada")
+    @Column(name = "ctrl_entrada")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date cteEntrada;
+    private Date ctrlEntrada;
     
-    @Column(name = "cte_saida")
+    @Column(name = "ctrl_saida")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date cteSaida;
+    private Date ctrlSaida;
     
     @JoinColumns({
         @JoinColumn(name = "prm_id", referencedColumnName = "prm_id"),
@@ -50,31 +50,31 @@ public class ControleEntrada implements Serializable {
     }
 
     public ControleEntrada(Integer cteId) {
-        this.cteId = cteId;
+        this.id = cteId;
     }
 
     public Integer getCteId() {
-        return cteId;
+        return id;
     }
 
     public void setCteId(Integer cteId) {
-        this.cteId = cteId;
+        this.id = cteId;
     }
 
     public Date getCteEntrada() {
-        return cteEntrada;
+        return ctrlEntrada;
     }
 
     public void setCteEntrada(Date cteEntrada) {
-        this.cteEntrada = cteEntrada;
+        this.ctrlEntrada = cteEntrada;
     }
 
     public Date getCteSaida() {
-        return cteSaida;
+        return ctrlSaida;
     }
 
     public void setCteSaida(Date cteSaida) {
-        this.cteSaida = cteSaida;
+        this.ctrlSaida = cteSaida;
     }
 
     public LocalProgramacao getLocalProgramacao() {
@@ -96,7 +96,7 @@ public class ControleEntrada implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cteId != null ? cteId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -107,7 +107,7 @@ public class ControleEntrada implements Serializable {
             return false;
         }
         ControleEntrada other = (ControleEntrada) object;
-        if ((this.cteId == null && other.cteId != null) || (this.cteId != null && !this.cteId.equals(other.cteId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -115,7 +115,7 @@ public class ControleEntrada implements Serializable {
 
     @Override
     public String toString() {
-        return "javaapplication2.ControleEntrada[ cteId=" + cteId + " ]";
+        return "javaapplication2.ControleEntrada[ cteId=" + id + " ]";
     }
     
 }

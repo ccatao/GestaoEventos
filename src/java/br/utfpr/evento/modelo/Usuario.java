@@ -14,20 +14,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
-@SequenceGenerator(name="UsuarioGen" , allocationSize=1)
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     
+
     @Id
-    @Basic(optional = false)
-    @Column(name = "id")
-    @GeneratedValue(generator="UsuarioGen", strategy=GenerationType.SEQUENCE)
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "login")
+    @Column
     private String login;
     
-    @Column(name = "senha")
+    @Column
     private String senha;
     
     @OneToOne(cascade= CascadeType.ALL, mappedBy="usuario")
@@ -36,32 +35,32 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Integer usuId) {
-        this.id = usuId;
+    public Usuario(Integer id) {
+        this.id = id;
     }
 
-    public Integer getUsuId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setUsuId(Integer usuId) {
-        this.id = usuId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getUsuLogin() {
+    public String getLogin() {
         return login;
     }
 
-    public void setUsuLogin(String usuLogin) {
-        this.login = usuLogin;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getUsuSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setUsuSenha(String usuSenha) {
-        this.senha = usuSenha;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public Entidade getEntidade() {
@@ -70,13 +69,6 @@ public class Usuario implements Serializable {
 
     public void setEntidade(Entidade entidade) {
         this.entidade = entidade;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
     }
 
     @Override
@@ -92,9 +84,5 @@ public class Usuario implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "javaapplication2.Usuario[ usuId=" + id + " ]";
-    }
-    
+   
 }

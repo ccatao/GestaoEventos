@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "unidade")
-@SequenceGenerator(name="UnidadeGen" , allocationSize=1)
 public class Unidade implements Serializable {
     private static final long serialVersionUID = 1L;
     
