@@ -22,9 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @SequenceGenerator(name="CidadeGen" , allocationSize=1)
 public class Cidade implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
-    @Column(name = "cdd_id")
+    @Column
     @GeneratedValue(generator="CidadeGen", strategy= GenerationType.SEQUENCE)
     private Integer cddId;
     

@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "endereco")
@@ -24,25 +23,24 @@ public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Basic(optional = false)
-    @Column(name = "end_id")
+    @Column(name = "id")
     @GeneratedValue(generator="EnderecoGen",strategy= GenerationType.SEQUENCE)
-    private Integer endId;
+    private Integer id;
     
-    @Column(name = "end_rua")
-    private String endRua;
+    @Column
+    private String rua;
     
-    @Column(name = "end_numero")
-    private String endNumero;
+    @Column
+    private String numero;
     
-    @Column(name = "end_bairro")
-    private String endBairro;
+    @Column
+    private String bairro;
     
-    @Column(name = "end_cep")
-    private String endCep;
+    @Column
+    private String cep;
     
-    @Column(name = "end_complemento")
-    private String endComplemento;
+    @Column
+    private String complemento;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "endereco")
     private List<Entidade> entidadeList;
@@ -57,8 +55,8 @@ public class Endereco implements Serializable {
     public Endereco() {
     }
 
-    public Endereco(Integer endId) {
-        this.endId = endId;
+    public Endereco(Integer id) {
+        this.id = id;
     }
 
     public Local getLocal() {
@@ -68,79 +66,7 @@ public class Endereco implements Serializable {
     public void setLocal(Local local) {
         this.local = local;
     }
-
-    public Integer getEndId() {
-        return endId;
-    }
-
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
-
-    public String getEndRua() {
-        return endRua;
-    }
-
-    public void setEndRua(String endRua) {
-        this.endRua = endRua;
-    }
-
-    public String getEndNumero() {
-        return endNumero;
-    }
-
-    public void setEndNumero(String endNumero) {
-        this.endNumero = endNumero;
-    }
-
-    public String getEndBairro() {
-        return endBairro;
-    }
-
-    public void setEndBairro(String endBairro) {
-        this.endBairro = endBairro;
-    }
-
-    public String getEndCep() {
-        return endCep;
-    }
-
-    public void setEndCep(String endCep) {
-        this.endCep = endCep;
-    }
-
-    public String getEndComplemento() {
-        return endComplemento;
-    }
-
-    public void setEndComplemento(String endComplemento) {
-        this.endComplemento = endComplemento;
-    }
-
-    @XmlTransient
-    public List<Entidade> getEntidadeList() {
-        return entidadeList;
-    }
-
-    public void setEntidadeList(List<Entidade> entidadeList) {
-        this.entidadeList = entidadeList;
-    }
-
-    public Cidade getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (endId != null ? endId.hashCode() : 0);
-        return hash;
-    }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -148,15 +74,9 @@ public class Endereco implements Serializable {
             return false;
         }
         Endereco other = (Endereco) object;
-        if ((this.endId == null && other.endId != null) || (this.endId != null && !this.endId.equals(other.endId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.Endereco[ endId=" + endId + " ]";
-    }
-    
+    }   
 }

@@ -7,6 +7,7 @@ package br.utfpr.evento.helper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -14,6 +15,8 @@ import javax.persistence.Persistence;
  */
 public class PersistenceFactory {
 
+    
+    @PersistenceContext(name="GestaoEventosPU")
     private static EntityManagerFactory emf = null;
     private static EntityManager em = null;
 

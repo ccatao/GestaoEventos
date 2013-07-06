@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -31,10 +29,6 @@ public class Usuario implements Serializable {
     
     @Column(name = "usu_senha")
     private String usuSenha;
-    
-    @JoinColumn(name = "usg_id", referencedColumnName = "usg_id")
-    @ManyToOne(optional = false)
-    private UsuarioGrupo usuarioGrupo;
     
     @OneToOne(cascade= CascadeType.ALL, mappedBy="usuario")
     private Entidade entidade;
@@ -68,14 +62,6 @@ public class Usuario implements Serializable {
 
     public void setUsuSenha(String usuSenha) {
         this.usuSenha = usuSenha;
-    }
-
-    public UsuarioGrupo getUsuarioGrupo() {
-        return usuarioGrupo;
-    }
-
-    public void setUsuarioGrupo(UsuarioGrupo usuarioGrupo) {
-        this.usuarioGrupo = usuarioGrupo;
     }
 
     public Entidade getEntidade() {
