@@ -8,8 +8,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ProgramaEntidadePK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "prg_id")
-    private int prgId;
+    @Column(name = "prog_id")
+    private int progId;
     @Basic(optional = false)
     @Column(name = "ent_id")
     private int entId;
@@ -18,16 +18,16 @@ public class ProgramaEntidadePK implements Serializable {
     }
 
     public ProgramaEntidadePK(int prgId, int entId) {
-        this.prgId = prgId;
+        this.progId = prgId;
         this.entId = entId;
     }
 
-    public int getPrgId() {
-        return prgId;
+    public int getProgId() {
+        return progId;
     }
 
-    public void setPrgId(int prgId) {
-        this.prgId = prgId;
+    public void setPrgId(int progId) {
+        this.progId = progId;
     }
 
     public int getEntId() {
@@ -41,7 +41,7 @@ public class ProgramaEntidadePK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) prgId;
+        hash += (int) progId;
         hash += (int) entId;
         return hash;
     }
@@ -53,18 +53,13 @@ public class ProgramaEntidadePK implements Serializable {
             return false;
         }
         ProgramaEntidadePK other = (ProgramaEntidadePK) object;
-        if (this.prgId != other.prgId) {
+        if (this.progId != other.progId) {
             return false;
         }
         if (this.entId != other.entId) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.ProgramaEntidadePK[ prgId=" + prgId + ", entId=" + entId + " ]";
     }
     
 }

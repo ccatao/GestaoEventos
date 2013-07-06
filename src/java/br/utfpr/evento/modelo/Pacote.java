@@ -26,46 +26,46 @@ public class Pacote implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "pct_id")
+    @Column(name = "id")
     @GeneratedValue(generator="PacoteGen", strategy=GenerationType.SEQUENCE)
-    private Integer pctId;
+    private Integer id;
     
-    @Column(name = "pct_nome")
-    private String pctNome;
+    @Column(name = "nome")
+    private String nome;
     
     @ManyToMany
     @JoinTable(name="PACOTE_INSCRICAO",
-            joinColumns=@JoinColumn(name="PCT_ID"),
-            inverseJoinColumns=@JoinColumn(name="INC_ID")
+            joinColumns=@JoinColumn(name="PACOTE_ID"),
+            inverseJoinColumns=@JoinColumn(name="INSNCRICAO_ID")
     )
     private List<Inscricao> inscricoes;
     
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="PACOTE_PROGRAMACAO",
              joinColumns=
-                  @JoinColumn(name="PCT_ID"),
+                  @JoinColumn(name="PACOTE_ID"),
              inverseJoinColumns=
-                  @JoinColumn(name="PRM_ID")
+                  @JoinColumn(name="PROGRAMACAO_ID")
     )
     private List<Programacao> programacaoList = new ArrayList<Programacao>();
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="evt_id")
+    @JoinColumn(name="eve_id")
     private Evento evento;
     
     public Pacote() {
     }
 
-    public Pacote(Integer pctId) {
-        this.pctId = pctId;
+    public Pacote(Integer id) {
+        this.id = id;
     }
 
-    public Integer getPctId() {
-        return pctId;
+    public Integer getId() {
+        return id;
     }
 
     public void setPctId(Integer pctId) {
-        this.pctId = pctId;
+        this.id = pctId;
     }
 
     public Evento getEvento() {
@@ -77,11 +77,11 @@ public class Pacote implements Serializable {
     }
 
     public String getPctNome() {
-        return pctNome;
+        return nome;
     }
 
     public void setPctNome(String pctNome) {
-        this.pctNome = pctNome;
+        this.nome = pctNome;
     }
 
     public List<Inscricao> getInscricoes() {
@@ -104,7 +104,7 @@ public class Pacote implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pctId != null ? pctId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -115,7 +115,7 @@ public class Pacote implements Serializable {
             return false;
         }
         Pacote other = (Pacote) object;
-        if ((this.pctId == null && other.pctId != null) || (this.pctId != null && !this.pctId.equals(other.pctId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -123,7 +123,7 @@ public class Pacote implements Serializable {
 
     @Override
     public String toString() {
-        return "javaapplication2.Pacote[ pctId=" + pctId + " ]";
+        return "javaapplication2.Pacote[ pctId=" + id + " ]";
     }
     
 }

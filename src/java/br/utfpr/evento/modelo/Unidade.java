@@ -22,40 +22,40 @@ public class Unidade implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "und_id")
+    @Column(name = "id")
     @GeneratedValue(generator="UnidadeGen", strategy= GenerationType.SEQUENCE)
-    private Integer undId;
+    private Integer id;
     
-    @Column(name = "und_descricao")
-    private String undDescricao;
+    @Column(name = "descricao")
+    private String descricao;
     
     public Unidade() {
     }
 
-    public Unidade(Integer undId) {
-        this.undId = undId;
+    public Unidade(Integer id) {
+        this.id = id;
     }
 
     public Integer getUndId() {
-        return undId;
+        return id;
     }
 
-    public void setUndId(Integer undId) {
-        this.undId = undId;
+    public void setUndId(Integer id) {
+        this.id = id;
     }
 
     public String getUndDescricao() {
-        return undDescricao;
+        return descricao;
     }
 
-    public void setUndDescricao(String undDescricao) {
-        this.undDescricao = undDescricao;
+    public void setUndDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (undId != null ? undId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -66,15 +66,11 @@ public class Unidade implements Serializable {
             return false;
         }
         Unidade other = (Unidade) object;
-        if ((this.undId == null && other.undId != null) || (this.undId != null && !this.undId.equals(other.undId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "javaapplication2.Unidade[ undId=" + undId + " ]";
-    }
-    
+   
 }

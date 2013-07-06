@@ -20,15 +20,15 @@ public class Usuario implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "usu_id")
+    @Column(name = "id")
     @GeneratedValue(generator="UsuarioGen", strategy=GenerationType.SEQUENCE)
-    private Integer usuId;
+    private Integer id;
     
-    @Column(name = "usu_login")
-    private String usuLogin;
+    @Column(name = "login")
+    private String login;
     
-    @Column(name = "usu_senha")
-    private String usuSenha;
+    @Column(name = "senha")
+    private String senha;
     
     @OneToOne(cascade= CascadeType.ALL, mappedBy="usuario")
     private Entidade entidade;
@@ -37,31 +37,31 @@ public class Usuario implements Serializable {
     }
 
     public Usuario(Integer usuId) {
-        this.usuId = usuId;
+        this.id = usuId;
     }
 
     public Integer getUsuId() {
-        return usuId;
+        return id;
     }
 
     public void setUsuId(Integer usuId) {
-        this.usuId = usuId;
+        this.id = usuId;
     }
 
     public String getUsuLogin() {
-        return usuLogin;
+        return login;
     }
 
     public void setUsuLogin(String usuLogin) {
-        this.usuLogin = usuLogin;
+        this.login = usuLogin;
     }
 
     public String getUsuSenha() {
-        return usuSenha;
+        return senha;
     }
 
     public void setUsuSenha(String usuSenha) {
-        this.usuSenha = usuSenha;
+        this.senha = usuSenha;
     }
 
     public Entidade getEntidade() {
@@ -75,7 +75,7 @@ public class Usuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usuId != null ? usuId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -86,7 +86,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.usuId == null && other.usuId != null) || (this.usuId != null && !this.usuId.equals(other.usuId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "javaapplication2.Usuario[ usuId=" + usuId + " ]";
+        return "javaapplication2.Usuario[ usuId=" + id + " ]";
     }
     
 }

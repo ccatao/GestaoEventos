@@ -27,16 +27,16 @@ public class Programacao implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "prm_id")
+    @Column(name = "id")
     @GeneratedValue(generator="ProgramacaoGen", strategy=GenerationType.SEQUENCE)
-    private Integer prmId;
+    private Integer id;
     
-    @Column(name = "prm_nome")
-    private String prmNome;
+    @Column(name = "nome")
+    private String nome;
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "prm_preco")
-    private BigDecimal prmPreco;
+    @Column(name = "preco")
+    private BigDecimal preco;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "programacao")
     private List<Programa> programaList = new ArrayList<Programa>();
@@ -44,7 +44,7 @@ public class Programacao implements Serializable {
     @ManyToMany(mappedBy="programacaoList",cascade= CascadeType.ALL)
     private List<Pacote> pacoteList = new ArrayList<Pacote>();
     
-    @JoinColumn(name = "evt_id", referencedColumnName = "evt_id")
+    @JoinColumn(name = "id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Evento evento;
     
@@ -55,31 +55,31 @@ public class Programacao implements Serializable {
     }
 
     public Programacao(Integer prmId) {
-        this.prmId = prmId;
+        this.id = prmId;
     }
 
     public Integer getPrmId() {
-        return prmId;
+        return id;
     }
 
-    public void setPrmId(Integer prmId) {
-        this.prmId = prmId;
+    public void setPrmId(Integer id) {
+        this.id = id;
     }
 
     public String getPrmNome() {
-        return prmNome;
+        return nome;
     }
 
-    public void setPrmNome(String prmNome) {
-        this.prmNome = prmNome;
+    public void setPrmNome(String nome) {
+        this.nome = nome;
     }
 
     public BigDecimal getPrmPreco() {
-        return prmPreco;
+        return preco;
     }
 
-    public void setPrmPreco(BigDecimal prmPreco) {
-        this.prmPreco = prmPreco;
+    public void setPrmPreco(BigDecimal preco) {
+        this.preco = preco;
     }
 
     @XmlTransient
@@ -119,7 +119,7 @@ public class Programacao implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (prmId != null ? prmId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -130,15 +130,10 @@ public class Programacao implements Serializable {
             return false;
         }
         Programacao other = (Programacao) object;
-        if ((this.prmId == null && other.prmId != null) || (this.prmId != null && !this.prmId.equals(other.prmId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.Programacao[ prmId=" + prmId + " ]";
     }
     
 }

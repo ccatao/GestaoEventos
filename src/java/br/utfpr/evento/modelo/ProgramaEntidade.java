@@ -51,10 +51,5 @@ public class ProgramaEntidade implements Serializable {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.ProgramaEntidade[ programaEntidadePK=" + programaEntidadePK + " ]";
-    }
-    
+   
 }

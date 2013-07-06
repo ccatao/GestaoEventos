@@ -20,14 +20,14 @@ public class Programa implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @Column(name = "prg_id")
+    @Column(name = "id")
     @GeneratedValue(generator="ProgramaGen", strategy=GenerationType.SEQUENCE)
-    private Integer prgId;
+    private Integer id;
     
-    @Column(name = "prg_descricao")
-    private String prgDescricao;
+    @Column(name = "descricao")
+    private String descricao;
     
-    @JoinColumn(name = "prm_id", referencedColumnName = "prm_id")
+    @JoinColumn(name = "programacao_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Programacao programacao;
     
@@ -35,24 +35,24 @@ public class Programa implements Serializable {
     public Programa() {
     }
 
-    public Programa(Integer prgId) {
-        this.prgId = prgId;
+    public Programa(Integer progId) {
+        this.id = progId;
     }
 
-    public Integer getPrgId() {
-        return prgId;
+    public Integer getProgId() {
+        return id;
     }
 
-    public void setPrgId(Integer prgId) {
-        this.prgId = prgId;
+    public void setProgId(Integer progId) {
+        this.id = progId;
     }
 
-    public String getPrgDescricao() {
-        return prgDescricao;
+    public String getProgDescricao() {
+        return descricao;
     }
 
-    public void setPrgDescricao(String prgDescricao) {
-        this.prgDescricao = prgDescricao;
+    public void setProgDescricao(String progDescricao) {
+        this.descricao = progDescricao;
     }
 
     public Programacao getProgramacao() {
@@ -66,7 +66,7 @@ public class Programa implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (prgId != null ? prgId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -77,15 +77,10 @@ public class Programa implements Serializable {
             return false;
         }
         Programa other = (Programa) object;
-        if ((this.prgId == null && other.prgId != null) || (this.prgId != null && !this.prgId.equals(other.prgId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.Programa[ prgId=" + prgId + " ]";
     }
     
 }
