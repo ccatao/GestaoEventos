@@ -2,14 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.utfpr.evento.persistence;
-
-import br.utfpr.evento.modelo.EntradaAgenda;
+package br.utfpr.evento.modelo;
 
 /**
  *
  * @author Nitrogênio
  */
-public class EntradaAgendaDAO extends GenericDAO<EntradaAgenda>{
+public class Professor extends Participante{
     
 }

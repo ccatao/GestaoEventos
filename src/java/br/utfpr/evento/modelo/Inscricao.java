@@ -36,11 +36,7 @@ public class Inscricao implements Serializable {
     
     @ManyToMany(mappedBy="inscricoes")
     private List<Pacote> pacotes = new ArrayList<Pacote>();
-    
-    @JoinColumn(name = "frp_id", referencedColumnName = "frp_id")
-    @ManyToOne(optional = false)
-    private FormaPagamento formaPagamento;
-    
+       
     @JoinColumn(name = "ent_id", referencedColumnName = "ent_id")
     @ManyToOne(optional = false)
     private Entidade entidade;
@@ -76,15 +72,7 @@ public class Inscricao implements Serializable {
         this.pacotes = pacotes;
     }
 
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
-
-    public Entidade getEntidade() {
+   public Entidade getEntidade() {
         return entidade;
     }
 

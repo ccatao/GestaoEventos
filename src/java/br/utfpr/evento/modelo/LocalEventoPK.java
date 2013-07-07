@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class LocalProgramacaoPK implements Serializable {
+public class LocalEventoPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "prm_id")
     private int prmId;
@@ -14,10 +14,10 @@ public class LocalProgramacaoPK implements Serializable {
     @Column(name = "lcl_id")
     private int lclId;
 
-    public LocalProgramacaoPK() {
+    public LocalEventoPK() {
     }
 
-    public LocalProgramacaoPK(int prmId, int lclId) {
+    public LocalEventoPK(int prmId, int lclId) {
         this.prmId = prmId;
         this.lclId = lclId;
     }
@@ -49,10 +49,10 @@ public class LocalProgramacaoPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LocalProgramacaoPK)) {
+        if (!(object instanceof LocalEventoPK)) {
             return false;
         }
-        LocalProgramacaoPK other = (LocalProgramacaoPK) object;
+        LocalEventoPK other = (LocalEventoPK) object;
         if (this.prmId != other.prmId) {
             return false;
         }

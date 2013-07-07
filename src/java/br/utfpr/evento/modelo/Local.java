@@ -38,7 +38,7 @@ public class Local implements Serializable {
     private byte[] lclImg;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "local")
-    private List<LocalProgramacao> localProgramacaoList;
+    private List<LocalEvento> localProgramacaoList;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lclPai")
     private List<Local> localList;
@@ -87,11 +87,11 @@ public class Local implements Serializable {
     }
 
     @XmlTransient
-    public List<LocalProgramacao> getLocalProgramacaoList() {
+    public List<LocalEvento> getLocalProgramacaoList() {
         return localProgramacaoList;
     }
 
-    public void setLocalProgramacaoList(List<LocalProgramacao> localProgramacaoList) {
+    public void setLocalProgramacaoList(List<LocalEvento> localProgramacaoList) {
         this.localProgramacaoList = localProgramacaoList;
     }
 

@@ -1,7 +1,6 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -16,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "pacote")
@@ -47,8 +45,7 @@ public class Pacote implements Serializable {
              inverseJoinColumns=
                   @JoinColumn(name="PROGRAMACAO_ID")
     )
-    private List<Programacao> programacaoList = new ArrayList<Programacao>();
-
+    
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="eve_id")
     private Evento evento;
@@ -92,22 +89,6 @@ public class Pacote implements Serializable {
         this.inscricoes = inscricoes;
     }
 
-    @XmlTransient
-    public List<Programacao> getProgramacaoList() {
-        return programacaoList;
-    }
-
-    public void setProgramacaoList(List<Programacao> programacaoList) {
-        this.programacaoList = programacaoList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -121,9 +102,4 @@ public class Pacote implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "javaapplication2.Pacote[ pctId=" + id + " ]";
-    }
-    
 }

@@ -50,10 +50,7 @@ public class Entidade implements Serializable {
     @Column(name = "datacadastro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro = new Date();
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entidade")
-    private List<ControleEntrada> controleEntradaList;
-       
+   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "entidade")
     private List<Inscricao> inscricaoList;
     
@@ -134,16 +131,6 @@ public class Entidade implements Serializable {
         this.dataCadastro = entDatacadastro;
     }
 
-    @XmlTransient
-    public List<ControleEntrada> getControleEntradaList() {
-        return controleEntradaList;
-    }
-
-    public void setControleEntradaList(List<ControleEntrada> controleEntradaList) {
-        this.controleEntradaList = controleEntradaList;
-    }
-
-    @XmlTransient
     public List<Inscricao> getInscricaoList() {
         return inscricaoList;
     }

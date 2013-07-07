@@ -4,12 +4,12 @@
  */
 package br.utfpr.evento.persistence;
 
-import br.utfpr.evento.modelo.LocalProgramacaoPK;
+import br.utfpr.evento.modelo.LocalEventoPK;
 
 /**
  *
  * @author Nitrogênio
  */
-public class LocalProgramacaoPKDAO extends GenericDAO<LocalProgramacaoPK>{
+public class LocalProgramacaoPKDAO extends GenericDAO<LocalEventoPK>{
     
 }

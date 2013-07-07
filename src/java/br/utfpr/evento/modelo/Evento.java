@@ -50,9 +50,6 @@ public class Evento implements Serializable {
     @JoinColumn(name="lcl_id", referencedColumnName = "lcl_id", unique=true, nullable=false, updatable=false, insertable=true)
     private Local local; 
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento")
-    private List<Programacao> programacaoList = new ArrayList<Programacao>();
-    
     @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="evento")
     private List<Local> localList = new ArrayList<Local>();
     
@@ -122,16 +119,6 @@ public class Evento implements Serializable {
         this.local = local;
     }
 
-    @XmlTransient
-    public List<Programacao> getProgramacaoList() {
-        return programacaoList;
-    }
-
-    public void setProgramacaoList(List<Programacao> programacaoList) {
-        this.programacaoList = programacaoList;
-    }
-
-    @XmlTransient
     public List<Local> getLocalList() {
         return localList;
     }

@@ -13,57 +13,33 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "local_programacao")
-public class LocalProgramacao implements Serializable {
+public class LocalEvento implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @EmbeddedId
-    protected LocalProgramacaoPK localProgramacaoPK = new LocalProgramacaoPK();
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localProgramacao")
-    private List<ControleEntrada> controleEntradaList;
-    
-    @JoinColumn(name = "prm_id", referencedColumnName = "prm_id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Programacao programacao;
-    
+    protected LocalEventoPK localProgramacaoPK = new LocalEventoPK();
+        
     @JoinColumn(name = "lcl_id", referencedColumnName = "lcl_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Local local;
 
-    public LocalProgramacao() {
+    public LocalEvento() {
     }
 
-    public LocalProgramacao(LocalProgramacaoPK localProgramacaoPK) {
+    public LocalEvento(LocalEventoPK localProgramacaoPK) {
         this.localProgramacaoPK = localProgramacaoPK;
     }
 
-    public LocalProgramacao(int prmId, int lclId) {
-        this.localProgramacaoPK = new LocalProgramacaoPK(prmId, lclId);
+    public LocalEvento(int prmId, int lclId) {
+        this.localProgramacaoPK = new LocalEventoPK(prmId, lclId);
     }
 
-    public LocalProgramacaoPK getLocalProgramacaoPK() {
+    public LocalEventoPK getLocalProgramacaoPK() {
         return localProgramacaoPK;
     }
 
-    public void setLocalProgramacaoPK(LocalProgramacaoPK localProgramacaoPK) {
+    public void setLocalProgramacaoPK(LocalEventoPK localProgramacaoPK) {
         this.localProgramacaoPK = localProgramacaoPK;
-    }
-
-    @XmlTransient
-    public List<ControleEntrada> getControleEntradaList() {
-        return controleEntradaList;
-    }
-
-    public void setControleEntradaList(List<ControleEntrada> controleEntradaList) {
-        this.controleEntradaList = controleEntradaList;
-    }
-
-    public Programacao getProgramacao() {
-        return programacao;
-    }
-
-    public void setProgramacao(Programacao programacao) {
-        this.programacao = programacao;
     }
 
     public Local getLocal() {
@@ -84,10 +60,10 @@ public class LocalProgramacao implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LocalProgramacao)) {
+        if (!(object instanceof LocalEvento)) {
             return false;
         }
-        LocalProgramacao other = (LocalProgramacao) object;
+        LocalEvento other = (LocalEvento) object;
         if ((this.localProgramacaoPK == null && other.localProgramacaoPK != null) || (this.localProgramacaoPK != null && !this.localProgramacaoPK.equals(other.localProgramacaoPK))) {
             return false;
         }
