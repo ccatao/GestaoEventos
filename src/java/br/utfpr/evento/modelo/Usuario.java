@@ -32,6 +32,9 @@ public class Usuario implements Serializable {
     @OneToOne(cascade= CascadeType.ALL, mappedBy="usuario")
     private Entidade entidade;
     
+    @OneToOne(mappedBy = "usuario")
+    private Participante participante;
+    
     public Usuario() {
     }
 
