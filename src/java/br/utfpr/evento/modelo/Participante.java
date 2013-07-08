@@ -26,14 +26,21 @@ public class Participante implements Serializable{
     
     private String nome;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
     private Endereco endereco;
     
     private String cpf;
     
+    private String identificacao;
+    
     @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private Usuario usuario;
+    
+    private Entidade entidade;
+    
+    
+    
     
     
     

@@ -4,10 +4,12 @@
  */
 package br.utfpr.evento.modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Nitrogênio
  */
-public class PacoteEventoPK {
+public class Agenda implements Serializable{
     
 }

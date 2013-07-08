@@ -18,7 +18,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "evento")
@@ -49,10 +48,7 @@ public class Evento implements Serializable {
     @OneToOne(optional=false, cascade={CascadeType.ALL})
     @JoinColumn(name="lcl_id", referencedColumnName = "lcl_id", unique=true, nullable=false, updatable=false, insertable=true)
     private Local local; 
-    
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="evento")
-    private List<Local> localList = new ArrayList<Local>();
-    
+      
     @OneToMany(cascade=CascadeType.ALL, mappedBy="evento")
     private List<Pacote> pacoteList = new ArrayList<Pacote>();
 
@@ -119,37 +115,5 @@ public class Evento implements Serializable {
         this.local = local;
     }
 
-    public List<Local> getLocalList() {
-        return localList;
-    }
-
-    public void setLocalList(List<Local> localList) {
-        this.localList = localList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (evtId != null ? evtId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Evento)) {
-            return false;
-        }
-        Evento other = (Evento) object;
-        if ((this.evtId == null && other.evtId != null) || (this.evtId != null && !this.evtId.equals(other.evtId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.Evento[ evtId=" + evtId + " ]";
-    }
     
 }

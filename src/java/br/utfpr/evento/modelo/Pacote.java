@@ -34,17 +34,8 @@ public class Pacote implements Serializable {
     @ManyToMany
     @JoinTable(name="PACOTE_INSCRICAO",
             joinColumns=@JoinColumn(name="PACOTE_ID"),
-            inverseJoinColumns=@JoinColumn(name="INSNCRICAO_ID")
-    )
+            inverseJoinColumns=@JoinColumn(name="INSNCRICAO_ID")    )
     private List<Inscricao> inscricoes;
-    
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="PACOTE_PROGRAMACAO",
-             joinColumns=
-                  @JoinColumn(name="PACOTE_ID"),
-             inverseJoinColumns=
-                  @JoinColumn(name="PROGRAMACAO_ID")
-    )
     
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="eve_id")
