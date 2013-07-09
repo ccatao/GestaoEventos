@@ -7,20 +7,9 @@
       xmlns:cp="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
-        <title>Gestão de Eventos</title>
-    </h:head>
+    <f:composition template="style/template.xhtml">
 
-
-
-
-    <h:body>
-
-        <div class="cabecalho">
-
-        </div>
-
-        <div class="corpo">
+        <f:define name="corpo">
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputText value="Login" />
@@ -31,12 +20,8 @@
                     <h:commandButton action="login" immediate="true" value="Cancelar" />
                 </h:panelGrid>
             </h:form>
-        </div>
-
-        <div class="rodape">
-        </div>
-        
-    </h:body>
+        </f:define>
+    </f:composition>
 
 </html>
 
