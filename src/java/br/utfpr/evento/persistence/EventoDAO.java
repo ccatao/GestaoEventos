@@ -14,41 +14,75 @@ import java.util.List;
 public class EventoDAO extends GenericDAO<Evento> {
 
     public Evento buscarId(Integer codigo) {
-        Evento usuario = null;
+        Evento evento = null;
         try {
-            usuario = (Evento) getEntityManager().createNamedQuery("Evento.findById")
+            evento = (Evento) getEntityManager().createNamedQuery("Evento.findById")
                     .setParameter("id", codigo)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return usuario;
+        return evento;
     }
 
-    public Evento buscarDescricao(String descricao) {
+    public Evento buscarSituacao(String situacao) {
         Evento evento = null;
         try {
-            evento = (Evento) getEntityManager().createNamedQuery("Evento.findByDescricao")
+            evento = (Evento) getEntityManager().createNamedQuery("Evento.findBySituacaoEvento")
+                    .setParameter("id", situacao)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return evento;
+    }
+
+    
+    public List<Evento> buscarDescricao(String descricao) {
+        List<Evento> eventos = null;
+        
+        descricao = "%" + descricao + "%";
+        
+        try {
+            eventos = getEntityManager().createNamedQuery("Evento.findByDescricao")
                     .setParameter("descricao", descricao)
-                    .getSingleResult();
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return evento;
+        return eventos;
     }
-
-    public Evento buscarNome(String nome) {
-        Evento evento = null;
+    
+    public List<Evento> buscarNome(String nome) {
+        List<Evento> eventos = null;
+        
+        nome = "%"+ nome +"%";
+        
         try {
-            evento = (Evento) getEntityManager().createNamedQuery("Evento.findByNome")
+            eventos = getEntityManager().createNamedQuery("Evento.findByNome")
                     .setParameter("nome", nome)
-                    .getSingleResult();
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return evento;
+        return eventos;
     }
-
+    
+    public List<Evento> buscarResponsavel(String responsavel) {
+        List<Evento> eventos = null;
+        
+        responsavel = "%"+ responsavel +"%";
+        
+        try {
+            eventos = getEntityManager().createNamedQuery("Evento.findByResponsavel")
+                    .setParameter("responsavel", responsavel)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return eventos;
+    }
+    
     @SuppressWarnings("unchecked")
     public List<Evento> listar() {
 
@@ -61,4 +95,6 @@ public class EventoDAO extends GenericDAO<Evento> {
         }
         return usuarios;
     }
+    
+    
 }

@@ -5,9 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,12 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,8 +30,10 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Evento.findAll", query = "SELECT e FROM Evento e"),
     @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id"),
-    @NamedQuery(name = "Evento.findByDescricao", query = "SELECT e FROM Evento e WHERE e.descricao = :descricao"),
-    @NamedQuery(name = "Evento.findByNome", query = "SELECT e FROM Evento e WHERE e.nome = :nome")})
+    @NamedQuery(name = "Evento.findByDescricao", query = "SELECT e FROM Evento e WHERE e.descricao LIKE :descricao"),
+    @NamedQuery(name = "Evento.findByNome", query = "SELECT e FROM Evento e WHERE e.nome LIKE :nome"),
+    @NamedQuery(name = "Evento.findByResponsavel", query = "SELECT e FROM Evento e WHERE e.responsavel.nome LIKE :responsavel"),
+    @NamedQuery(name = "Evento.findBySituacaoEvento", query = "SELECT e FROM Evento e WHERE e.situacaoEvento = :situacaoEvento")})
 public class Evento implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -51,61 +48,31 @@ public class Evento implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "Campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "Mínimo 10 e máximo 45 caracteres.")
+    @NotNull(message =  "O campo não pode ser vazio.")
+    @Size(min = 5, max = 45, message = "O tamanho mínimo é de 5 e o máximo 45 caracteres.")
     @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
     private String descricao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "Campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "Mínimo 10 e máximo 45 caracteres.")
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 10, max = 45, message = "O tamanho mínimo é 10 e o máximo 45 caracteres.")
     @Column(name = "nome", nullable = false, length = 45)
     //</editor-fold>
     private String nome;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Basic(optional = false)
-    @NotNull(message = "Campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "Mínimo 10 e máximo 45 caracteres.")
-    @Column(name = "nome", nullable = false, length = 45)
-    //</editor-fold>
-    private Situacao situacao;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "local_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
-    private Local localId;
+    private Pessoa responsavel;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinTable(name = "tb_evento_atividade", joinColumns = {
-        @JoinColumn(name = "tb_evento_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-            @JoinColumn(name = "tb_atividade_id", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
-    //</editor-fold>
-    private Collection<Atividade> atividades;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento")
-    //</editor-fold>
-    private Collection<Inscricao> inscricoes;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "responsavel", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    //</editor-fold>
-    private Usuario responsavel;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "situacao_evento_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
     @Enumerated(EnumType.STRING)
     //</editor-fold>
-    private Situacao situacaoId;
-    
-   
+    private Situacao situacaoEvento;
+
     public Evento() {
     }
 
@@ -113,10 +80,12 @@ public class Evento implements Serializable {
         this.id = id;
     }
 
-    public Evento(Integer id, String descricao, String nome) {
+    public Evento(Integer id, String descricao, String nome, Pessoa responsavel, Situacao situacaoEvento) {
         this.id = id;
         this.descricao = descricao;
         this.nome = nome;
+        this.responsavel = responsavel;
+        this.situacaoEvento = situacaoEvento;
     }
 
     public Integer getId() {
@@ -143,44 +112,20 @@ public class Evento implements Serializable {
         this.nome = nome;
     }
 
-    public Local getLocalId() {
-        return localId;
-    }
-
-    public void setLocalId(Local localId) {
-        this.localId = localId;
-    }
-
-    public Collection<Atividade> getAtividades() {
-        return atividades;
-    }
-
-    public void setAtividades(Collection<Atividade> atividades) {
-        this.atividades = atividades;
-    }
-
-    public Collection<Inscricao> getInscricoes() {
-        return inscricoes;
-    }
-
-    public void setInscricoes(Collection<Inscricao> inscricoes) {
-        this.inscricoes = inscricoes;
-    }
-    
-    public Usuario getResponsavel() {
+    public Pessoa getResponsavel() {
         return responsavel;
     }
 
-    public void setResponsavel(Usuario responsavel) {
+    public void setResponsavel(Pessoa responsavel) {
         this.responsavel = responsavel;
     }
 
-    public Situacao getSituacaoId() {
-        return situacaoId;
+    public Situacao getSituacaoEventoId() {
+        return situacaoEvento;
     }
 
-    public void setSituacaoId(Situacao situacaoEventoId) {
-        this.situacaoId = situacaoEventoId;
+    public void setSituacaoEventoId(Situacao situacaoEventoId) {
+        this.situacaoEvento = situacaoEventoId;
     }
 
     @Override
@@ -203,4 +148,9 @@ public class Evento implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "br.utfpr.evento.modelo.Evento[ id=" + id + " ]";
+    }
+    
 }
