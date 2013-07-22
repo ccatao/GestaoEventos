@@ -1,7 +1,11 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,128 +14,132 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author Cleber
+ */
 @Entity
-@Table(name = "local")
-@SequenceGenerator(name="LocalGen" , allocationSize=1)
+@Table(name = "tb_local")
+@NamedQueries({
+    @NamedQuery(name = "Local.findAll", query = "SELECT l FROM Local l"),
+    @NamedQuery(name = "Local.findById", query = "SELECT l FROM Local l WHERE l.id = :id"),
+    @NamedQuery(name = "Local.findByNome", query = "SELECT l FROM Local l WHERE l.nome = :nome"),
+    @NamedQuery(name = "Local.findByReferencia", query = "SELECT l FROM Local l WHERE l.referencia = :referencia")})
 public class Local implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "lcl_id")
-    @GeneratedValue(generator="LocalGen", strategy=GenerationType.SEQUENCE)
-    private Integer lclId;
+    @Column(name = "id", nullable = false)
+    //</editor-fold>
+    private Integer id;
     
-    @Column(name = "lcl_descricao")
-    private String lclDescricao;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 4, max = 45, message = "O tamanho mínimo é 4 e o máximo 45 caracteres.")
+    @Column(name = "nome", nullable = false, length = 45)
+    //</editor-fold>
+    private String nome;
     
-    @Lob
-    @Column(name = "lcl_img")
-    private byte[] lclImg;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Size(max = 45, message = "O tamanho máximo do campo é 45 caracteres.")
+    @Column(name = "referencia", length = 45)
+    //</editor-fold>
+    private String referencia;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "local")
-    private List<LocalEvento> localProgramacaoList;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "responsavel", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private Pessoa responsavel;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lclPai")
-    private List<Local> localList;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private Endereco enderecoId;
     
-    @JoinColumn(name = "lcl_pai", referencedColumnName = "lcl_id", nullable=true)
-    @ManyToOne(optional=true)
-    private Local lclPai;
-    
-    @ManyToOne
-    @JoinColumn(name="evt_id")
-    private Evento evento;
-    
-    @OneToOne(optional=false, cascade={CascadeType.ALL})
-    @JoinColumn(name="end_id", unique=true, nullable=false, updatable=false, insertable=true, referencedColumnName = "end_id")
-    private Endereco endereco = new Endereco() ;
-    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localId")
+    //</editor-fold>
+    private Collection<Atividade> atividades;
+
     public Local() {
     }
 
-    public Local(Integer lclId) {
-        this.lclId = lclId;
+    public Local(Integer id) {
+        this.id = id;
     }
 
-    public Integer getLclId() {
-        return lclId;
+    public Local(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
-    public void setLclId(Integer lclId) {
-        this.lclId = lclId;
+    public Integer getId() {
+        return id;
     }
 
-    public String getLclDescricao() {
-        return lclDescricao;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setLclDescricao(String lclDescricao) {
-        this.lclDescricao = lclDescricao;
+    public String getNome() {
+        return nome;
     }
 
-    public byte[] getLclImg() {
-        return lclImg;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setLclImg(byte[] lclImg) {
-        this.lclImg = lclImg;
+    public String getReferencia() {
+        return referencia;
     }
 
-    @XmlTransient
-    public List<LocalEvento> getLocalProgramacaoList() {
-        return localProgramacaoList;
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
 
-    public void setLocalProgramacaoList(List<LocalEvento> localProgramacaoList) {
-        this.localProgramacaoList = localProgramacaoList;
+    public Pessoa getResponsavel() {
+        return responsavel;
     }
 
-    @XmlTransient
-    public List<Local> getLocalList() {
-        return localList;
+    public void setResponsavel(Pessoa responsavel) {
+        this.responsavel = responsavel;
     }
 
-    public void setLocalList(List<Local> localList) {
-        this.localList = localList;
+    public Endereco getEnderecoId() {
+        return enderecoId;
     }
 
-    public Local getLclPai() {
-        return lclPai;
+    public void setEnderecoId(Endereco enderecoId) {
+        this.enderecoId = enderecoId;
     }
 
-    public void setLclPai(Local lclPai) {
-        this.lclPai = lclPai;
+    public Collection<Atividade> getAtividades() {
+        return atividades;
     }
 
-    public Evento getEvento() {
-        return evento;
+    public void setAtividades(Collection<Atividade> atividades) {
+        this.atividades = atividades;
     }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (lclId != null ? lclId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -142,7 +150,7 @@ public class Local implements Serializable {
             return false;
         }
         Local other = (Local) object;
-        if ((this.lclId == null && other.lclId != null) || (this.lclId != null && !this.lclId.equals(other.lclId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -150,7 +158,7 @@ public class Local implements Serializable {
 
     @Override
     public String toString() {
-        return "javaapplication2.Local[ lclId=" + lclId + " ]";
+        return "br.utfpr.evento.modelo.Local[ id=" + id + " ]";
     }
     
 }

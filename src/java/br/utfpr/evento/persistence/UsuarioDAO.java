@@ -4,12 +4,14 @@
  */
 package br.utfpr.evento.persistence;
 
-import br.utfpr.evento.modelo.Pacote;
+import br.utfpr.evento.modelo.Usuario;
 
 /**
  *
- * @author Nitrogênio
+ * @author Cleber
  */
-public class PacoteDAO extends GenericDAO<Pacote>{
+public class UsuarioDAO extends GenericDAO<Usuario>{
+    
+    
     
 }

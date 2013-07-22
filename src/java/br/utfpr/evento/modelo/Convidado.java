@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
  * @author Cleber
  */
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Palestrante extends Pessoa{
-        
+public class Convidado extends Pessoa{
     
 }

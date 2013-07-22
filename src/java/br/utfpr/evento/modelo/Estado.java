@@ -1,7 +1,11 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,76 +13,106 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author Cleber
+ */
 @Entity
-@Table(name = "estado")
-@SequenceGenerator(name="EstadoGen" , allocationSize=1)
+@Table(name = "tb_estado")
+@NamedQueries({
+    @NamedQuery(name = "Estado.findAll", query = "SELECT e FROM Estado e"),
+    @NamedQuery(name = "Estado.findById", query = "SELECT e FROM Estado e WHERE e.id = :id"),
+    @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome = :nome"),
+    @NamedQuery(name = "Estado.findByUf", query = "SELECT e FROM Estado e WHERE e.uf = :uf")})
 public class Estado implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "est_id")
-    @GeneratedValue(generator="EstadoGen", strategy= GenerationType.SEQUENCE)
-    private Integer estId;
+    @Column(name = "id", nullable = false)
+    //</editor-fold>
+    private Integer id;
     
-    @Column(name = "est_uf")
-    private String estUf;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 4, max = 20, message = "O tamanho mínimo é 4 e o máximo 20 caracteres.")
+    @Column(name = "nome", nullable = false, length = 20)
+    //</editor-fold>
+    private String nome;
     
-    @Column(name = "est_nome")
-    private String estNome;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 2, max = 2, message = "O tamanho do campo é 2 caracteres.")
+    @Column(name = "uf", nullable = false, length = 2)
+    //</editor-fold>
+    private String uf;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estado")
-    private List<Cidade> cidadeList;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoId")
+    //</editor-fold>
+    private Collection<Cidade> cidadeCollection;
 
     public Estado() {
     }
 
-    public Estado(Integer estId) {
-        this.estId = estId;
+    public Estado(Integer id) {
+        this.id = id;
     }
 
-    public Integer getEstId() {
-        return estId;
+    public Estado(Integer id, String nome, String uf) {
+        this.id = id;
+        this.nome = nome;
+        this.uf = uf;
     }
 
-    public void setEstId(Integer estId) {
-        this.estId = estId;
+    public Integer getId() {
+        return id;
     }
 
-    public String getEstUf() {
-        return estUf;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setEstUf(String estUf) {
-        this.estUf = estUf;
+    public String getNome() {
+        return nome;
     }
 
-    public String getEstNome() {
-        return estNome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setEstNome(String estNome) {
-        this.estNome = estNome;
+    public String getUf() {
+        return uf;
     }
 
-    @XmlTransient
-    public List<Cidade> getCidadeList() {
-        return cidadeList;
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
-    public void setCidadeList(List<Cidade> cidadeList) {
-        this.cidadeList = cidadeList;
+    public Collection<Cidade> getCidadeCollection() {
+        return cidadeCollection;
+    }
+
+    public void setCidadeCollection(Collection<Cidade> cidadeCollection) {
+        this.cidadeCollection = cidadeCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (estId != null ? estId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -89,15 +123,10 @@ public class Estado implements Serializable {
             return false;
         }
         Estado other = (Estado) object;
-        if ((this.estId == null && other.estId != null) || (this.estId != null && !this.estId.equals(other.estId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "javaapplication2.Estado[ estId=" + estId + " ]";
     }
     
 }

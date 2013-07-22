@@ -1,7 +1,11 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,47 +15,90 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author Cleber
+ */
 @Entity
-@Table(name = "endereco")
-@SequenceGenerator(name="EnderecoGen" , allocationSize=1)
+@Table(name = "tb_endereco")
+@NamedQueries({
+    @NamedQuery(name = "Endereco.findAll", query = "SELECT e FROM Endereco e"),
+    @NamedQuery(name = "Endereco.findById", query = "SELECT e FROM Endereco e WHERE e.id = :id"),
+    @NamedQuery(name = "Endereco.findByDescricao", query = "SELECT e FROM Endereco e WHERE e.descricao = :descricao"),
+    @NamedQuery(name = "Endereco.findByNumero", query = "SELECT e FROM Endereco e WHERE e.numero = :numero"),
+    @NamedQuery(name = "Endereco.findByBairro", query = "SELECT e FROM Endereco e WHERE e.bairro = :bairro"),
+    @NamedQuery(name = "Endereco.findByCep", query = "SELECT e FROM Endereco e WHERE e.cep = :cep")})
 public class Endereco implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Id
-    @Column(name = "id")
-    @GeneratedValue(generator="EnderecoGen",strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
+    //</editor-fold>
     private Integer id;
     
-    @Column
-    private String rua;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 10, max = 80, message = "O tamanho mínimo é 10 e o máximo 80 caracteres.")
+    @Column(name = "descricao", nullable = false, length = 80)
+    //</editor-fold>
+    private String descricao;
     
-    @Column
-    private String numero;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Column(name = "numero", nullable = false)
+    //</editor-fold>
+    private Integer numero;
     
-    @Column
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 5, max = 55, message = "O tamanho mínimo é 5 e o máximo 55 caracteres.")
+    @Column(name = "bairro", nullable = false, length = 55)
+    //</editor-fold>
     private String bairro;
     
-    @Column
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ser vazio.")
+    @Size(min = 8, max = 8, message = "O campo deve ter 8 caracteres.")
+    @Column(name = "cep", nullable = false, length = 8)
+    //</editor-fold>
     private String cep;
     
-    @Column
-    private String complemento;
+    //<editor-fold defaultstate="collapsed" desc="anotaçães">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
+    //</editor-fold>
+    private Collection<Local> locais;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "endereco")
-    private List<Entidade> entidadeList;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "cidade_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private Cidade cidadeId;
     
-    @JoinColumn(name = "cdd_id", referencedColumnName = "cdd_id")
-    @ManyToOne(optional = false, cascade={CascadeType.REMOVE})
-    private Cidade cidade;
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
+    //</editor-fold>
+    private Collection<Pessoa> pessoas;
     
-    @OneToOne(mappedBy = "endereco", cascade= CascadeType.ALL)
-    private Local local;
-    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
+    //</editor-fold>
+    private Collection<Entidade> entidades;
+
     public Endereco() {
     }
 
@@ -59,12 +106,12 @@ public class Endereco implements Serializable {
         this.id = id;
     }
 
-    public Local getLocal() {
-        return local;
-    }
-
-    public void setLocal(Local local) {
-        this.local = local;
+    public Endereco(Integer id, String descricao, Integer numero, String bairro, String cep) {
+        this.id = id;
+        this.descricao = descricao;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cep = cep;
     }
 
     public Integer getId() {
@@ -75,19 +122,19 @@ public class Endereco implements Serializable {
         this.id = id;
     }
 
-    public String getRua() {
-        return rua;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
@@ -107,31 +154,45 @@ public class Endereco implements Serializable {
         this.cep = cep;
     }
 
-    public String getComplemento() {
-        return complemento;
+    public Cidade getCidadeId() {
+        return cidadeId;
     }
 
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
+    public void setCidadeId(Cidade cidadeId) {
+        this.cidadeId = cidadeId;
     }
 
-    public List<Entidade> getEntidadeList() {
-        return entidadeList;
+    public Collection<Local> getLocais() {
+        return locais;
     }
 
-    public void setEntidadeList(List<Entidade> entidadeList) {
-        this.entidadeList = entidadeList;
+    public void setLocais(Collection<Local> locais) {
+        this.locais = locais;
     }
 
-    public Cidade getCidade() {
-        return cidade;
+    public Collection<Pessoa> getPessoas() {
+        return pessoas;
     }
 
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
+    public void setPessoas(Collection<Pessoa> pessoas) {
+        this.pessoas = pessoas;
+    }
+
+    public Collection<Entidade> getEntidades() {
+        return entidades;
+    }
+
+    public void setEntidades(Collection<Entidade> entidades) {
+        this.entidades = entidades;
     }
     
-        
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -143,5 +204,7 @@ public class Endereco implements Serializable {
             return false;
         }
         return true;
-    }   
+    }
+
+    
 }

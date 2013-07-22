@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,13 +26,13 @@ import javax.validation.constraints.Size;
  * @author Cleber
  */
 @Entity
-@Table(name = "tb_cidade", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"nome"})})
+@Table(name = "tb_categoria", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"descricao"})})
 @NamedQueries({
-    @NamedQuery(name = "Cidade.findAll", query = "SELECT c FROM Cidade c"),
-    @NamedQuery(name = "Cidade.findById", query = "SELECT c FROM Cidade c WHERE c.id = :id"),
-    @NamedQuery(name = "Cidade.findByNome", query = "SELECT c FROM Cidade c WHERE c.nome = :nome")})
-public class Cidade implements Serializable {
+    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
+    @NamedQuery(name = "Categoria.findById", query = "SELECT c FROM Categoria c WHERE c.id = :id"),
+    @NamedQuery(name = "Categoria.findByDescricao", query = "SELECT c FROM Categoria c WHERE c.descricao = :descricao")})
+public class Categoria implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -49,32 +47,26 @@ public class Cidade implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
     @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "O tamanho mínimo é 10 e o máximo 45 caracteres.")
-    @Column(name = "nome", nullable = false, length = 45)
+    @Size(min = 5, max = 45, message = "Tamanho mínimo 5 e máximo 45 caracteres.")
+    @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
-    private String nome;
+    private String descricao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cidadeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     //</editor-fold>
-    private Collection<Endereco> enderecos;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "estado_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    //</editor-fold>
-    private Estado estadoId;
+    private Collection<Entidade> entidades;
 
-    public Cidade() {
+    public Categoria() {
     }
 
-    public Cidade(Integer id) {
+    public Categoria(Integer id) {
         this.id = id;
     }
 
-    public Cidade(Integer id, String nome) {
+    public Categoria(Integer id, String descricao) {
         this.id = id;
-        this.nome = nome;
+        this.descricao = descricao;
     }
 
     public Integer getId() {
@@ -85,28 +77,20 @@ public class Cidade implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public Collection<Endereco> getEnderecos() {
-        return enderecos;
+    public Collection<Entidade> getEntidades() {
+        return entidades;
     }
 
-    public void setEnderecos(Collection<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
-    
-    public Estado getEstadoId() {
-        return estadoId;
-    }
-
-    public void setEstadoId(Estado estadoId) {
-        this.estadoId = estadoId;
+    public void setEntidades(Collection<Entidade> entidades) {
+        this.entidades = entidades;
     }
 
     @Override
@@ -119,15 +103,14 @@ public class Cidade implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cidade)) {
+        if (!(object instanceof Categoria)) {
             return false;
         }
-        Cidade other = (Cidade) object;
+        Categoria other = (Categoria) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-
-        
+    
 }
