@@ -32,8 +32,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Entidade.findAll", query = "SELECT e FROM Entidade e"),
     @NamedQuery(name = "Entidade.findById", query = "SELECT e FROM Entidade e WHERE e.id = :id"),
-    @NamedQuery(name = "Entidade.findByNome", query = "SELECT e FROM Entidade e WHERE e.nome = :nome"),
-    @NamedQuery(name = "Entidade.findByEmail", query = "SELECT e FROM Entidade e WHERE e.email = :email"),
+    @NamedQuery(name = "Entidade.findByNome", query = "SELECT e FROM Entidade e WHERE e.nome LIKE :nome"),
+    @NamedQuery(name = "Entidade.findByEmail", query = "SELECT e FROM Entidade e WHERE e.email LIKE :email"),
     @NamedQuery(name = "Entidade.findByCnpj", query = "SELECT e FROM Entidade e WHERE e.cnpj = :cnpj")})
 public class Entidade implements Serializable {
     

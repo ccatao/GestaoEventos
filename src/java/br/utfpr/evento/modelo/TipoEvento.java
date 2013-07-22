@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TipoEvento.findAll", query = "SELECT t FROM TipoEvento t"),
     @NamedQuery(name = "TipoEvento.findById", query = "SELECT t FROM TipoEvento t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoEvento.findByDescricao", query = "SELECT t FROM TipoEvento t WHERE t.descricao = :descricao")})
+    @NamedQuery(name = "TipoEvento.findByDescricao", query = "SELECT t FROM TipoEvento t WHERE t.descricao LIKE :descricao")})
 public class TipoEvento implements Serializable {
     
     private static final long serialVersionUID = 1L;

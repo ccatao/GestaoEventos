@@ -52,13 +52,7 @@ public class Inscricao implements Serializable {
     @ManyToMany
     //</editor-fold>
     private Collection<Atividade> atividades;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "tb_participante_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    //</editor-fold>
-    private Pessoa pessoa;
-    
+        
     //<editor-fold defaultstate="collapsed" desc="anotacões">
     @JoinColumn(name = "tb_evento_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
@@ -103,14 +97,6 @@ public class Inscricao implements Serializable {
 
     public void setAtividades(Collection<Atividade> atividades) {
         this.atividades = atividades;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 
     public Evento getEvento() {

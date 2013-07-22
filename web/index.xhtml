@@ -6,13 +6,17 @@
       xmlns:f="http://java.sun.com/jsf/facelets"
       xmlns:cp="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui">
-        
+
     <h:head>
         <title>Facelet Title</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
         <p:outputLabel id="teste">Teste</p:outputLabel>
-        
+
+        <br />
+        <h:link outcome="/estado/List" value="Show All Estado Items"/>
     </h:body>
+
 </html>
 

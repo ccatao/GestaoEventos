@@ -31,8 +31,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Local.findAll", query = "SELECT l FROM Local l"),
     @NamedQuery(name = "Local.findById", query = "SELECT l FROM Local l WHERE l.id = :id"),
-    @NamedQuery(name = "Local.findByNome", query = "SELECT l FROM Local l WHERE l.nome = :nome"),
-    @NamedQuery(name = "Local.findByReferencia", query = "SELECT l FROM Local l WHERE l.referencia = :referencia")})
+    @NamedQuery(name = "Local.findByNome", query = "SELECT l FROM Local l WHERE l.nome LIKE :nome"),
+    @NamedQuery(name = "Local.findByReferencia", query = "SELECT l FROM Local l WHERE l.referencia LIKE :referencia")})
 public class Local implements Serializable {
     
     private static final long serialVersionUID = 1L;
