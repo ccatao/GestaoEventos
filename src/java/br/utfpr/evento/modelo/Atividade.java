@@ -6,6 +6,7 @@ package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -58,6 +61,22 @@ public class Atividade implements Serializable {
     @Column(name = "duracao", nullable = false)
     //</editor-fold>
     private double duracao;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ficar vazio.")
+    @Column(name = "hora_inicio", nullable = false)
+    @Temporal(TemporalType.DATE)
+    //</editor-fold>
+    private Date horaInicio;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ficar vazio.")
+    @Column(name = "hora_fim", nullable = false)
+    @Temporal(TemporalType.DATE)
+    //</editor-fold>
+    private Date horaFim;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @ManyToMany(mappedBy = "atividades")

@@ -55,4 +55,8 @@ public class PersistenceFactory {
 
         System.out.println("finalize");
     }
+    
+    public static void limpaCache(){
+    	emf.getCache().evictAll();
+    }
 }

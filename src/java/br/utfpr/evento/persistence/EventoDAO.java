@@ -29,7 +29,7 @@ public class EventoDAO extends GenericDAO<Evento> {
         Evento evento = null;
         try {
             evento = (Evento) getEntityManager().createNamedQuery("Evento.findBySituacaoEvento")
-                    .setParameter("id", situacao)
+                    .setParameter("situacao", situacao)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();

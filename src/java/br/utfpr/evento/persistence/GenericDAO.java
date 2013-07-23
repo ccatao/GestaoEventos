@@ -1,5 +1,6 @@
 package br.utfpr.evento.persistence;
 
+import br.utfpr.evento.helper.PersistenceFactory;
 import br.utfpr.evento.persistence.interfaces.DaoInterface;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -48,7 +49,7 @@ public abstract class GenericDAO<T> implements DaoInterface<T> {
     @Override
     public EntityManager getEntityManager() {
 
-        return Persistence.createEntityManagerFactory("GestaoEventosPU").createEntityManager();
+        return PersistenceFactory.getEntityManager();
 
     }
 }

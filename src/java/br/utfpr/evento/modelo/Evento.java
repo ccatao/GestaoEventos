@@ -5,6 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -33,9 +36,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Evento.findByDescricao", query = "SELECT e FROM Evento e WHERE e.descricao LIKE :descricao"),
     @NamedQuery(name = "Evento.findByNome", query = "SELECT e FROM Evento e WHERE e.nome LIKE :nome"),
     @NamedQuery(name = "Evento.findByResponsavel", query = "SELECT e FROM Evento e WHERE e.responsavel.nome LIKE :responsavel"),
-    @NamedQuery(name = "Evento.findBySituacaoEvento", query = "SELECT e FROM Evento e WHERE e.situacaoEvento = :situacaoEvento")})
+    @NamedQuery(name = "Evento.findBySituacaoEvento", query = "SELECT e FROM Evento e WHERE e.situacaoEvento = :situacao")})
 public class Evento implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
@@ -48,7 +51,7 @@ public class Evento implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message =  "O campo não pode ser vazio.")
+    @NotNull(message = "O campo não pode ser vazio.")
     @Size(min = 5, max = 45, message = "O tamanho mínimo é de 5 e o máximo 45 caracteres.")
     @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
@@ -67,6 +70,22 @@ public class Evento implements Serializable {
     @ManyToOne(optional = false)
     //</editor-fold>
     private Pessoa responsavel;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ficar vazio.")
+    @Column(name = "data_inicio", nullable = false)
+    @Temporal(TemporalType.DATE)
+    //</editor-fold>
+    private Date dataInicio;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo não pode ficar vazio.")
+    @Column(name = "data_fim", nullable = false)
+    @Temporal(TemporalType.DATE)
+    //</editor-fold>
+    private Date horaFim;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Enumerated(EnumType.STRING)
@@ -120,12 +139,28 @@ public class Evento implements Serializable {
         this.responsavel = responsavel;
     }
 
-    public Situacao getSituacaoEventoId() {
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(Date horaFim) {
+        this.horaFim = horaFim;
+    }
+
+    public Situacao getSituacaoEvento() {
         return situacaoEvento;
     }
 
-    public void setSituacaoEventoId(Situacao situacaoEventoId) {
-        this.situacaoEvento = situacaoEventoId;
+    public void setSituacaoEvento(Situacao situacaoEvento) {
+        this.situacaoEvento = situacaoEvento;
     }
 
     @Override
@@ -152,5 +187,4 @@ public class Evento implements Serializable {
     public String toString() {
         return "br.utfpr.evento.modelo.Evento[ id=" + id + " ]";
     }
-    
 }
