@@ -5,9 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -31,7 +28,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
     @NamedQuery(name = "Categoria.findById", query = "SELECT c FROM Categoria c WHERE c.id = :id"),
-    @NamedQuery(name = "Categoria.findByDescricao", query = "SELECT c FROM Categoria c WHERE c.descricao = :descricao")})
+    @NamedQuery(name = "Categoria.findByDescricao", query = "SELECT c FROM Categoria c WHERE c.descricao LIKE :descricao")})
 public class Categoria implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -46,17 +43,12 @@ public class Categoria implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 5, max = 45, message = "Tamanho mínimo 5 e máximo 45 caracteres.")
+    @NotNull(message = "O campo \"descrição\" não deve ter menos que 5 ou mais que 45 caracteres.")
+    @Size(min = 5, max = 45)
     @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
     private String descricao;
     
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    //</editor-fold>
-    private Collection<Entidade> entidades;
-
     public Categoria() {
     }
 
@@ -83,14 +75,6 @@ public class Categoria implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Collection<Entidade> getEntidades() {
-        return entidades;
-    }
-
-    public void setEntidades(Collection<Entidade> entidades) {
-        this.entidades = entidades;
     }
 
     @Override

@@ -17,11 +17,11 @@ import javax.persistence.TransactionRequiredException;
  */
 public interface DaoInterface<T> {
 
-    public <T> void salvar(T entidade);
+    public <T> boolean salvar(T entidade);
 
-    public <T> T atualizar(T entidade);
+    public <T> boolean atualizar(T entidade);
 
-    public <T> void remover(T entidade);
+    public <T> boolean remover(T entidade);
    
     public EntityManager getEntityManager();
 }

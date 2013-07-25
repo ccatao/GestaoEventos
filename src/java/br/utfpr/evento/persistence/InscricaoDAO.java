@@ -29,8 +29,8 @@ public class InscricaoDAO extends GenericDAO<Inscricao> {
         List<Inscricao> inscricoes = null;
         
         try {
-            inscricoes = getEntityManager().createNamedQuery("Inscricao.findByTbEventoId")
-                    .setParameter("tbEventoId", codigo)
+            inscricoes = getEntityManager().createNamedQuery("Inscricao.findByEventoId")
+                    .setParameter("eventoId", codigo)
                     .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,8 +41,8 @@ public class InscricaoDAO extends GenericDAO<Inscricao> {
     public List<Inscricao> buscarParticipanteId(Integer codigo) {
         List<Inscricao> inscricoes = null;
         try {
-            inscricoes = getEntityManager().createNamedQuery("Inscricao.findByTbParticipanteId")
-                    .setParameter("tbParticipanteId", codigo)
+            inscricoes = getEntityManager().createNamedQuery("Inscricao.findByParticipanteId")
+                    .setParameter("participanteId", codigo)
                     .getResultList();
         } catch (Exception e) {
             e.printStackTrace();

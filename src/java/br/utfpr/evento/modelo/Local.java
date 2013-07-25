@@ -5,9 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -47,20 +44,20 @@ public class Local implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 4, max = 45, message = "O tamanho mínimo é 4 e o máximo 45 caracteres.")
+    @NotNull(message = "O campo \"nome\" não deve ser vazio.")
+    @Size(min = 4, max = 45, message = "O campo \"nome\" não deve ter menos que 4 ou mais que 20 caracteres.")
     @Column(name = "nome", nullable = false, length = 45)
     //</editor-fold>
     private String nome;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Size(max = 45, message = "O tamanho máximo do campo é 45 caracteres.")
+    @Size(max = 45, message = "O campo \"nome\" não deve mais que 45 caracteres.")
     @Column(name = "referencia", length = 45)
     //</editor-fold>
     private String referencia;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "responsavel", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
     private Pessoa responsavel;
@@ -69,13 +66,8 @@ public class Local implements Serializable {
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
-    private Endereco enderecoId;
+    private Endereco endereco;
     
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localId")
-    //</editor-fold>
-    private Collection<Atividade> atividades;
-
     public Local() {
     }
 
@@ -112,30 +104,22 @@ public class Local implements Serializable {
         this.referencia = referencia;
     }
 
-    public Pessoa getResponsavel() {
+    public Pessoa getResponsavelId() {
         return responsavel;
     }
 
-    public void setResponsavel(Pessoa responsavel) {
-        this.responsavel = responsavel;
+    public void setResponsavelId(Pessoa responsavelId) {
+        this.responsavel = responsavelId;
     }
 
     public Endereco getEnderecoId() {
-        return enderecoId;
+        return endereco;
     }
 
     public void setEnderecoId(Endereco enderecoId) {
-        this.enderecoId = enderecoId;
+        this.endereco = enderecoId;
     }
 
-    public Collection<Atividade> getAtividades() {
-        return atividades;
-    }
-
-    public void setAtividades(Collection<Atividade> atividades) {
-        this.atividades = atividades;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -156,9 +140,4 @@ public class Local implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "br.utfpr.evento.modelo.Local[ id=" + id + " ]";
-    }
-    
 }

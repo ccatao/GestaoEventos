@@ -66,11 +66,11 @@ public class PalestranteDAO extends GenericDAO<Usuario> {
         return palestrantes;
     }
     
-    public Palestrante buscarUsuarioId(Integer codigo) {
+    public Palestrante buscarUsuario(Usuario usuario) {
         Palestrante palestrante = null;
         try {
-            palestrante = (Palestrante) getEntityManager().createNamedQuery("Pessoa.findByUsuarioId")
-                    .setParameter("id", codigo)
+            palestrante = (Palestrante) getEntityManager().createNamedQuery("Pessoa.findByUsuario")
+                    .setParameter("id", usuario.getId())
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,11 +78,23 @@ public class PalestranteDAO extends GenericDAO<Usuario> {
         return palestrante;
     }
     
-    public Palestrante buscarIdentificacao(String identificacao) {
+    public Palestrante buscarIdentificador(String identificador) {
         Palestrante palestrante = null;
         try {
             palestrante = (Palestrante) getEntityManager().createNamedQuery("Pessoa.findByIdentificacao")
-                    .setParameter("identificacao", identificacao)
+                    .setParameter("identificacao", identificador)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return palestrante;
+    }
+    
+    public Palestrante buscarPorLogin(String login) {
+        Palestrante palestrante = null;
+        try {
+            palestrante = (Palestrante) getEntityManager().createNamedQuery("Pessoa.findByLogin")
+                    .setParameter("login", login)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();

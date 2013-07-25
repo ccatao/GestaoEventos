@@ -5,19 +5,22 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,11 +37,13 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Evento.findAll", query = "SELECT e FROM Evento e"),
     @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id"),
     @NamedQuery(name = "Evento.findByDescricao", query = "SELECT e FROM Evento e WHERE e.descricao LIKE :descricao"),
+    @NamedQuery(name = "Evento.findBySituacaoEvento", query = "SELECT e FROM Evento e WHERE e.situacaoEvento.descricao = :situacao"),
+    @NamedQuery(name = "Evento.findByResponsavel", query = "SELECT e FROM Evento e WHERE e.responsavel.nome LIKE :nome"),
     @NamedQuery(name = "Evento.findByNome", query = "SELECT e FROM Evento e WHERE e.nome LIKE :nome"),
-    @NamedQuery(name = "Evento.findByResponsavel", query = "SELECT e FROM Evento e WHERE e.responsavel.nome LIKE :responsavel"),
-    @NamedQuery(name = "Evento.findBySituacaoEvento", query = "SELECT e FROM Evento e WHERE e.situacaoEvento = :situacao")})
+    @NamedQuery(name = "Evento.findByDataInicio", query = "SELECT e FROM Evento e WHERE e.dataInicio = :dataInicio"),
+    @NamedQuery(name = "Evento.findByDataFim", query = "SELECT e FROM Evento e WHERE e.dataFim = :dataFim")})
 public class Evento implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
@@ -51,29 +56,23 @@ public class Evento implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 5, max = 45, message = "O tamanho mínimo é de 5 e o máximo 45 caracteres.")
+    @NotNull(message = "O campo \"descrição\" não deve ser vazio.")
+    @Size(min = 5, max = 45, message = "O campo \"descrição\" não deve ter menos que 5 ou mais que 45 caracteres.")
     @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
     private String descricao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "O tamanho mínimo é 10 e o máximo 45 caracteres.")
+    @NotNull(message = "O campo \"nome\" não deve ser vazio.")
+    @Size(min = 3, max = 45, message = "O campo \"nome\" não deve ter menos que 3 ou mais que 45 caracteres.")
     @Column(name = "nome", nullable = false, length = 45)
     //</editor-fold>
     private String nome;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "responsavel_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    //</editor-fold>
-    private Pessoa responsavel;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ficar vazio.")
+    @NotNull(message = "O campo \"data inicial\" não deve ser vazio.")
     @Column(name = "data_inicio", nullable = false)
     @Temporal(TemporalType.DATE)
     //</editor-fold>
@@ -81,16 +80,42 @@ public class Evento implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ficar vazio.")
+    @NotNull(message = "O campo \"data final\" não deve ser vazio.")
     @Column(name = "data_fim", nullable = false)
     @Temporal(TemporalType.DATE)
     //</editor-fold>
-    private Date horaFim;
+    private Date dataFim;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Enumerated(EnumType.STRING)
+    @JoinTable(name = "tb_evento_atividade", joinColumns = {
+        @JoinColumn(name = "evento_id", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+            @JoinColumn(name = "atividade_id", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
     //</editor-fold>
-    private Situacao situacaoEvento;
+    private Collection<Atividade> atividades;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento")
+    //</editor-fold>
+    private Collection<Inscricao> inscricoes;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "tipo_evento_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private TipoEvento tipoEvento;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private Pessoa responsavel;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "situacao_evento_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private SituacaoEvento situacaoEvento;
 
     public Evento() {
     }
@@ -99,12 +124,12 @@ public class Evento implements Serializable {
         this.id = id;
     }
 
-    public Evento(Integer id, String descricao, String nome, Pessoa responsavel, Situacao situacaoEvento) {
+    public Evento(Integer id, String descricao, String nome, Date dataInicio, Date dataFim) {
         this.id = id;
         this.descricao = descricao;
         this.nome = nome;
-        this.responsavel = responsavel;
-        this.situacaoEvento = situacaoEvento;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
     }
 
     public Integer getId() {
@@ -131,14 +156,6 @@ public class Evento implements Serializable {
         this.nome = nome;
     }
 
-    public Pessoa getResponsavel() {
-        return responsavel;
-    }
-
-    public void setResponsavel(Pessoa responsavel) {
-        this.responsavel = responsavel;
-    }
-
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -147,19 +164,51 @@ public class Evento implements Serializable {
         this.dataInicio = dataInicio;
     }
 
-    public Date getHoraFim() {
-        return horaFim;
+    public Date getDataFim() {
+        return dataFim;
     }
 
-    public void setHoraFim(Date horaFim) {
-        this.horaFim = horaFim;
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
     }
 
-    public Situacao getSituacaoEvento() {
+    public Collection<Atividade> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(Collection<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
+    public Collection<Inscricao> getInscricoes() {
+        return inscricoes;
+    }
+
+    public void setInscricaoCollection(Collection<Inscricao> inscricoes) {
+        this.inscricoes = inscricoes;
+    }
+
+    public TipoEvento getTipoEvento() {
+        return tipoEvento;
+    }
+
+    public void setTipoEvento(TipoEvento tipoEvento) {
+        this.tipoEvento = tipoEvento;
+    }
+
+    public Pessoa getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(Pessoa responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    public SituacaoEvento getSituacaoEvento() {
         return situacaoEvento;
     }
 
-    public void setSituacaoEvento(Situacao situacaoEvento) {
+    public void setSituacaoEvento(SituacaoEvento situacaoEvento) {
         this.situacaoEvento = situacaoEvento;
     }
 
@@ -182,9 +231,5 @@ public class Evento implements Serializable {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "br.utfpr.evento.modelo.Evento[ id=" + id + " ]";
-    }
+    
 }

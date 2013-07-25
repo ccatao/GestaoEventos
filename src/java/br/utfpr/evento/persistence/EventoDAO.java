@@ -5,6 +5,7 @@
 package br.utfpr.evento.persistence;
 
 import br.utfpr.evento.modelo.Evento;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,20 +69,46 @@ public class EventoDAO extends GenericDAO<Evento> {
         return eventos;
     }
     
-    public List<Evento> buscarResponsavel(String responsavel) {
+    public List<Evento> buscarResponsavel(String nome) {
         List<Evento> eventos = null;
         
-        responsavel = "%"+ responsavel +"%";
+        nome = "%"+ nome +"%";
         
         try {
             eventos = getEntityManager().createNamedQuery("Evento.findByResponsavel")
-                    .setParameter("responsavel", responsavel)
+                    .setParameter("nome", nome)
                     .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return eventos;
     }
+    
+     public List<Evento> buscarPorDataInicio(Date data) {
+        List<Evento> eventos = null;
+               
+        try {
+            eventos = getEntityManager().createNamedQuery("Evento.findByDataInicio")
+                    .setParameter("dataInicio", data)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return eventos;
+    }    
+     
+    public List<Evento> buscarPorDataFim(Date data) {
+        List<Evento> eventos = null;
+               
+        try {
+            eventos = getEntityManager().createNamedQuery("Evento.findByDataInicio")
+                    .setParameter("dataFim", data)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return eventos;
+    } 
     
     @SuppressWarnings("unchecked")
     public List<Evento> listar() {

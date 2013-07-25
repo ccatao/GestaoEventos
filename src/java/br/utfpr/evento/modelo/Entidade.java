@@ -5,9 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -46,48 +43,50 @@ public class Entidade implements Serializable {
     @Column(name = "id", nullable = false)
     //</editor-fold>
     private Integer id;
- 
+    
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 4, max = 60, message = "O tamanho mínimo 4 e o máximo 60 caracteres.")
+    @NotNull(message = "O campo \"nome\" não deve ser vazio.")
+    @Size(min = 4, max = 60, message = "O campo \"nome\" não deve ter menos que 4 ou mais que 60 caracteres.")
     @Column(name = "nome", nullable = false, length = 60)
     //</editor-fold>
     private String nome;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    //campo de validação do e-mail
+    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "O tamanho mínimo é 10 e o máximo 45 caracteres.")
+    @NotNull(message = "O campo \"e-mail\" não deve ser vazio.")
+    @Size(min = 10, max = 45, message = "O campo \"e-mail\" não deve ter menos que 10 ou mais que 45 caracteres.")
     @Column(name = "email", nullable = false, length = 45)
     //</editor-fold>
     private String email;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 13, max = 14, message = "Tamanho máximo 14 caracteres.")
+    @NotNull(message = "O campo \"CNPJ\" não deve ser vazio.")
+    @Size(min = 14, max = 14, message = "O campo \"CNPJ\" deve ter 14 caracteres.")
     @Column(name = "cnpj", nullable = false, length = 14)
     //</editor-fold>
     private String cnpj;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entidadeId")
-    //</editor-fold>
-    private Collection<Pessoa> pessoas;
-    
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Usuario usuarioId;
+    //</editor-fold>
+    private Usuario usuario;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Endereco enderecoId;
+    //</editor-fold>
+    private Endereco endereco;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Categoria categoriaId;
+    //</editor-fold>
+    private Categoria categoria;
 
     public Entidade() {
     }
@@ -135,36 +134,28 @@ public class Entidade implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public Collection<Pessoa> getPessoas() {
-        return pessoas;
-    }
-
-    public void setPessoas(Collection<Pessoa> pessoas) {
-        this.pessoas = pessoas;
-    }
-
-       public Usuario getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuarioId() {
+        return usuario;
     }
 
     public void setUsuarioId(Usuario usuarioId) {
-        this.usuarioId = usuarioId;
+        this.usuario = usuarioId;
     }
 
     public Endereco getEnderecoId() {
-        return enderecoId;
+        return endereco;
     }
 
     public void setEnderecoId(Endereco enderecoId) {
-        this.enderecoId = enderecoId;
+        this.endereco = enderecoId;
     }
 
     public Categoria getCategoriaId() {
-        return categoriaId;
+        return categoria;
     }
 
     public void setCategoriaId(Categoria categoriaId) {
-        this.categoriaId = categoriaId;
+        this.categoria = categoriaId;
     }
 
     @Override
@@ -187,9 +178,4 @@ public class Entidade implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "br.utfpr.evento.modelo.Entidade[ id=" + id + " ]";
-    }
-    
 }

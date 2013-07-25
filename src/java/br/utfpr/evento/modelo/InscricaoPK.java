@@ -17,27 +17,26 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class InscricaoPK implements Serializable {
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
+    @NotNull
+    @Column(name = "evento_id", nullable = false)
+    //</editor-fold>
     private int id;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
     @NotNull
-    @Column(name = "tb_evento_id", nullable = false)
-    private int tbEventoId;
-    
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tb_participante_id", nullable = false)
-    private int tbParticipanteId;
+    @Column(name = "participante_id", nullable = false)
+    //</editor-fold>
+    private int participante;
 
     public InscricaoPK() {
     }
 
-    public InscricaoPK(int id, int tbEventoId, int tbParticipanteId) {
+    public InscricaoPK(int id, int participante) {
         this.id = id;
-        this.tbEventoId = tbEventoId;
-        this.tbParticipanteId = tbParticipanteId;
+        this.participante = participante;
     }
 
     public int getId() {
@@ -48,28 +47,19 @@ public class InscricaoPK implements Serializable {
         this.id = id;
     }
 
-    public int getTbEventoId() {
-        return tbEventoId;
+    public int getParticipante() {
+        return participante;
     }
 
-    public void setTbEventoId(int tbEventoId) {
-        this.tbEventoId = tbEventoId;
-    }
-
-    public int getTbParticipanteId() {
-        return tbParticipanteId;
-    }
-
-    public void setTbParticipanteId(int tbParticipanteId) {
-        this.tbParticipanteId = tbParticipanteId;
+    public void setParticipante(int participanteId) {
+        this.participante = participanteId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) id;
-        hash += (int) tbEventoId;
-        hash += (int) tbParticipanteId;
+        hash += (int) participante;
         return hash;
     }
 
@@ -83,13 +73,10 @@ public class InscricaoPK implements Serializable {
         if (this.id != other.id) {
             return false;
         }
-        if (this.tbEventoId != other.tbEventoId) {
-            return false;
-        }
-        if (this.tbParticipanteId != other.tbParticipanteId) {
+        if (this.participante != other.participante) {
             return false;
         }
         return true;
     }
-    
+   
 }

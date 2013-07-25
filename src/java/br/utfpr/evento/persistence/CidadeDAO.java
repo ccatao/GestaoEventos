@@ -27,6 +27,9 @@ public class CidadeDAO extends GenericDAO<Cidade> {
 
     public List<Cidade> buscarNome(String nome) {
         List<Cidade> cidades = null;
+        
+        nome = "%" + nome + "%";
+        
         try {
             cidades =  getEntityManager().createNamedQuery("Cidade.findByNome")
                     .setParameter("nome", nome)
@@ -55,7 +58,7 @@ public class CidadeDAO extends GenericDAO<Cidade> {
 
         List<Cidade> cidades = null;
         try {
-            cidades = getEntityManager().createNamedQuery("Cidade.findByEstadoIdUf")
+            cidades = getEntityManager().createNamedQuery("Cidade.findByUf")
                     .setParameter("uf", uf)
                     .getResultList();
         } catch (Exception e) {

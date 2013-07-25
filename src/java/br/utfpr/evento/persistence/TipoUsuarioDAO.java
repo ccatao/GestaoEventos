@@ -5,6 +5,7 @@
 package br.utfpr.evento.persistence;
 
 import br.utfpr.evento.modelo.TipoUsuario;
+import br.utfpr.evento.modelo.utils.UsuarioTipo;
 import java.util.List;
 
 /**
@@ -25,11 +26,9 @@ public class TipoUsuarioDAO extends GenericDAO<TipoUsuario> {
         return tipoUsuario;
     }
 
-    public List<TipoUsuario> buscarDescricao(String descricao) {
+    public List<TipoUsuario> buscarDescricao(UsuarioTipo descricao) {
         List<TipoUsuario> tipoUsuario = null;
-        
-        descricao = "%" + descricao + "%";
-        
+               
         try {
             tipoUsuario = getEntityManager().createNamedQuery("TipoUsuario.findByDescricao")
                     .setParameter("descricao", descricao)

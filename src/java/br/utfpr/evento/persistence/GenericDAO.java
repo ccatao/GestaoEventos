@@ -15,34 +15,52 @@ import javax.persistence.Persistence;
 public abstract class GenericDAO<T> implements DaoInterface<T> {
 
     @Override
-    public <T> void salvar(T entidade) {
+    public <T> boolean salvar(T entidade) {
 
 
-        getEntityManager().getTransaction().begin();
-        getEntityManager().persist(entidade);
-        getEntityManager().getTransaction().commit();
+        try {
+            
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(entidade);
+            getEntityManager().getTransaction().commit();
+
+            return true;
+        } catch (Exception e) {
+            getEntityManager().getTransaction().rollback();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> boolean atualizar(T entidade) {
+
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().merge(entidade);
+            getEntityManager().getTransaction().commit();
+            
+            return true;
+        } catch (Exception e) {
+            getEntityManager().getTransaction().rollback();
+            return false;
+        }
 
     }
 
     @Override
-    public <T> T atualizar(T entidade) {
+    public <T> boolean remover(T entidade) {
 
-        T salvo = null;
+        try {
+            getEntityManager().getTransaction().begin();
+            getEntityManager().remove(entidade);
+            getEntityManager().getTransaction().commit();
 
-        getEntityManager().getTransaction().begin();
-        salvo = getEntityManager().merge(entidade);
-        getEntityManager().getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            getEntityManager().getTransaction().rollback();
+            return false;
+        }
 
-
-        return salvo;
-    }
-
-    @Override
-    public <T> void remover(T entidade) {
-
-        getEntityManager().getTransaction().begin();
-        getEntityManager().remove(entidade);
-        getEntityManager().getTransaction().commit();
 
     }
 

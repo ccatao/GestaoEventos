@@ -33,8 +33,10 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Atividade.findAll", query = "SELECT a FROM Atividade a"),
     @NamedQuery(name = "Atividade.findById", query = "SELECT a FROM Atividade a WHERE a.id = :id"),
-    @NamedQuery(name = "Atividade.findByDescricao", query = "SELECT a FROM Atividade a WHERE a.descricao = :descricao"),
-    @NamedQuery(name = "Atividade.findByDuracao", query = "SELECT a FROM Atividade a WHERE a.duracao = :duracao")})
+    @NamedQuery(name = "Atividade.findByDescricao", query = "SELECT a FROM Atividade a WHERE a.descricao LIKE :descricao"),
+    @NamedQuery(name = "Atividade.findByDuracao", query = "SELECT a FROM Atividade a WHERE a.duracao = :duracao"),
+    @NamedQuery(name = "Atividade.findByDataAtividade", query = "SELECT a FROM Atividade a WHERE a.dataAtividade = :dataAtividade"),
+    @NamedQuery(name = "Atividade.findByHoraInicio", query = "SELECT a FROM Atividade a WHERE a.horaInicio = :horaInicio")})
 public class Atividade implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -49,34 +51,34 @@ public class Atividade implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 5, max = 45, message = "Tamanho mínimo 5 e máximo de 45 dígitos.")
+    @NotNull(message = "O campo \"descrição\" não deve ser vazio.")
+    @Size(min = 5, max = 45, message = "O campo \"descrição\" não deve ter menos que 5 ou mais que 45 caracteres.")
     @Column(name = "descricao", nullable = false, length = 45)
     //</editor-fold>
     private String descricao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "A duração não pode ser vazia. Ex.: 2,5")
+    @NotNull(message = "O campo \"duração\" não deve ser vazio.")
     @Column(name = "duracao", nullable = false)
     //</editor-fold>
     private double duracao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ficar vazio.")
-    @Column(name = "hora_inicio", nullable = false)
+    @NotNull(message = "O campo \"data da atividade\" não deve ser vazio.")
+    @Column(name = "data_atividade", nullable = false)
     @Temporal(TemporalType.DATE)
     //</editor-fold>
-    private Date horaInicio;
+    private Date dataAtividade;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ficar vazio.")
-    @Column(name = "hora_fim", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @NotNull(message = "O campo \"hora de início\" não deve ser vazio.")
+    @Column(name = "hora_inicio", nullable = false)
+    @Temporal(TemporalType.TIME)
     //</editor-fold>
-    private Date horaFim;
+    private Date horaInicio;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @ManyToMany(mappedBy = "atividades")
@@ -95,7 +97,7 @@ public class Atividade implements Serializable {
     private Local local;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "responsavel", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
     private Pessoa responsavel;
@@ -107,10 +109,12 @@ public class Atividade implements Serializable {
         this.id = id;
     }
 
-    public Atividade(Integer id, String descricao, double duracao) {
+    public Atividade(Integer id, String descricao, double duracao, Date dataAtividade, Date horaInicio) {
         this.id = id;
         this.descricao = descricao;
         this.duracao = duracao;
+        this.dataAtividade = dataAtividade;
+        this.horaInicio = horaInicio;
     }
 
     public Integer getId() {
@@ -137,27 +141,43 @@ public class Atividade implements Serializable {
         this.duracao = duracao;
     }
 
-    public Collection<Evento> getEventos() {
+    public Date getDataAtividade() {
+        return dataAtividade;
+    }
+
+    public void setDataAtividade(Date dataAtividade) {
+        this.dataAtividade = dataAtividade;
+    }
+
+    public Date getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(Date horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public Collection<Evento> getEvento() {
         return eventos;
     }
 
-    public void setEventos(Collection<Evento> eventos) {
+    public void setEvento(Collection<Evento> eventos) {
         this.eventos = eventos;
     }
 
-    public Collection<Inscricao> getInscricoes() {
+    public Collection<Inscricao> getInscricao() {
         return inscricoes;
     }
 
-    public void setInscricoes(Collection<Inscricao> inscricoes) {
+    public void setInscricao(Collection<Inscricao> inscricoes) {
         this.inscricoes = inscricoes;
     }
 
-    public Local getLocal() {
+    public Local getLocalId() {
         return local;
     }
 
-    public void setLocal(Local local) {
+    public void setLocalId(Local local) {
         this.local = local;
     }
 

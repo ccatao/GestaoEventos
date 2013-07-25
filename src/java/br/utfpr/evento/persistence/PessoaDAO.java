@@ -67,8 +67,20 @@ public class PessoaDAO extends GenericDAO<Pessoa> {
     public Pessoa buscarUsuarioId(Integer codigo) {
         Pessoa pessoa = null;
         try {
-            pessoa = (Pessoa) getEntityManager().createNamedQuery("Pessoa.findByUsuarioId")
+            pessoa = (Pessoa) getEntityManager().createNamedQuery("Pessoa.findByUsuario")
                     .setParameter("id", codigo)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pessoa;
+    }
+    
+    public Pessoa buscarPorLogin(String login) {
+        Pessoa pessoa = null;
+        try {
+            pessoa = (Pessoa) getEntityManager().createNamedQuery("Pessoa.findByLogin")
+                    .setParameter("login", login)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();

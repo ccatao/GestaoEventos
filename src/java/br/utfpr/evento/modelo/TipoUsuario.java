@@ -4,18 +4,18 @@
  */
 package br.utfpr.evento.modelo;
 
+import br.utfpr.evento.modelo.utils.UsuarioTipo;
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TipoUsuario.findAll", query = "SELECT t FROM TipoUsuario t"),
     @NamedQuery(name = "TipoUsuario.findById", query = "SELECT t FROM TipoUsuario t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoUsuario.findByDescricao", query = "SELECT t FROM TipoUsuario t WHERE t.descricao LIKE :descricao")})
+    @NamedQuery(name = "TipoUsuario.findByDescricao", query = "SELECT t FROM TipoUsuario t WHERE t.descricao = :descricao")})
 public class TipoUsuario implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -46,17 +46,12 @@ public class TipoUsuario implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 25, message = "Tamanho máximo 25 caracteres.")
+    @NotNull(message = "O campo \"descrição\" não deve ser vazio.")
     @Column(name = "descricao", nullable = false, length = 25)
+    @Enumerated(EnumType.STRING)
     //</editor-fold>
-    private String descricao;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoUsuarioId")
-    //</editor-fold>
-    private Collection<Usuario> usuarios;
-
+    private UsuarioTipo descricao;
+       
     public TipoUsuario() {
     }
 
@@ -64,7 +59,7 @@ public class TipoUsuario implements Serializable {
         this.id = id;
     }
 
-    public TipoUsuario(Integer id, String descricao) {
+    public TipoUsuario(Integer id, UsuarioTipo descricao) {
         this.id = id;
         this.descricao = descricao;
     }
@@ -77,20 +72,12 @@ public class TipoUsuario implements Serializable {
         this.id = id;
     }
 
-    public String getDescricao() {
+    public UsuarioTipo getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao(UsuarioTipo descricao) {
         this.descricao = descricao;
-    }
-
-    public Collection<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Collection<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 
     @Override
@@ -112,5 +99,5 @@ public class TipoUsuario implements Serializable {
         }
         return true;
     }
-
+    
 }

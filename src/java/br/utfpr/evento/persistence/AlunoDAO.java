@@ -5,6 +5,7 @@
 package br.utfpr.evento.persistence;
 
 import br.utfpr.evento.modelo.Aluno;
+import br.utfpr.evento.modelo.Usuario;
 import java.util.List;
 
 /**
@@ -64,11 +65,11 @@ public class AlunoDAO extends GenericDAO<Aluno> {
         return alunos;
     }
     
-    public Aluno buscarAlunoId(Integer codigo) {
+    public Aluno buscarUsuario(Usuario usuario) {
         Aluno aluno = null;
         try {
-            aluno = (Aluno) getEntityManager().createNamedQuery("Pessoa.findByUsuarioId")
-                    .setParameter("id", codigo)
+            aluno = (Aluno) getEntityManager().createNamedQuery("Pessoa.findByUsuario")
+                    .setParameter("id", usuario.getId())
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,6 +82,18 @@ public class AlunoDAO extends GenericDAO<Aluno> {
         try {
             aluno = (Aluno) getEntityManager().createNamedQuery("Pessoa.findByIdentificacao")
                     .setParameter("identificacao", identificacao)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return aluno;
+    }
+    
+    public Aluno buscarPorLogin(String login) {
+        Aluno aluno = null;
+        try {
+            aluno = (Aluno) getEntityManager().createNamedQuery("Pessoa.findByLogin")
+                    .setParameter("login", login)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();

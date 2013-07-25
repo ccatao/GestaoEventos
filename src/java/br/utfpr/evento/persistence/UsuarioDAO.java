@@ -40,7 +40,7 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
     public Usuario buscarSenha(String senha) {
         Usuario usuario = null;
         try {
-            usuario = (Usuario) getEntityManager().createNamedQuery("Usuario.findByLogin")
+            usuario = (Usuario) getEntityManager().createNamedQuery("Usuario.findBySenha")
                     .setParameter("senha", senha)
                     .getSingleResult();
         } catch (Exception e) {

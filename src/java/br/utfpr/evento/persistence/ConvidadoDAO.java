@@ -5,6 +5,7 @@
 package br.utfpr.evento.persistence;
 
 import br.utfpr.evento.modelo.Convidado;
+import br.utfpr.evento.modelo.Usuario;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
      public Convidado buscarId(Integer codigo) {
         Convidado convidado = null;
         try {
-            convidado = (Convidado) getEntityManager().createNamedQuery("Convidado.findById")
+            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findById")
                     .setParameter("id", codigo)
                     .getSingleResult();
         } catch (Exception e) {
@@ -31,7 +32,7 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
         nome = "%" + nome + "%";
         
         try {
-            convidados = getEntityManager().createNamedQuery("Convidado.findByNome")
+            convidados = getEntityManager().createNamedQuery("Pessoa.findByNome")
                     .setParameter("nome", nome)
                     .getResultList();
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
     public Convidado buscarCpf(String cpf) {
         Convidado convidado = null;
         try {
-            convidado = (Convidado) getEntityManager().createNamedQuery("Convidado.findByCpf")
+            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findByCpf")
                     .setParameter("cpf", cpf)
                     .getSingleResult();
         } catch (Exception e) {
@@ -64,11 +65,11 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
         return convidados;
     }
     
-    public Convidado buscarConvidadoId(Integer codigo) {
+    public Convidado buscarUsuario(Usuario usuario) {
         Convidado convidado = null;
         try {
-            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findByPessoaId")
-                    .setParameter("id", codigo)
+            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findByUsuario")
+                    .setParameter("id", usuario.getId())
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,11 +77,23 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
         return convidado;
     }
     
-    public Convidado buscarIdentificacao(String identificacao) {
+    public Convidado buscarIdentificador(String identificador) {
         Convidado convidado = null;
         try {
-            convidado = (Convidado) getEntityManager().createNamedQuery("Convidado.findByIdentificacao")
-                    .setParameter("identificacao", identificacao)
+            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findByIdentificacao")
+                    .setParameter("identificacao", identificador)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return convidado;
+    }
+    
+    public Convidado buscarPorLogin(String login) {
+        Convidado convidado = null;
+        try {
+            convidado = (Convidado) getEntityManager().createNamedQuery("Pessoa.findByLogin")
+                    .setParameter("login", login)
                     .getSingleResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +106,7 @@ public class ConvidadoDAO extends GenericDAO<Convidado> {
 
         List<Convidado> convidados = null;
         try {
-            convidados = getEntityManager().createNamedQuery("Convidado.findAll")
+            convidados = getEntityManager().createNamedQuery("Pessoa.findAll")
                     .getResultList();
         } catch (Exception e) {
             e.printStackTrace();

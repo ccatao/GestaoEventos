@@ -41,12 +41,12 @@ public class TipoEvento implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 1, max = 45, message = "Tamanho máximo 45 caracteres.")
+    @NotNull(message = "O campo \"descrição\" não deve ser vazio.")
+    @Size(min = 5, max = 45, message = "O campo \"descrição\" não deve ter menos que 5 ou mais que 45 caracteres.")
     @Column(name = "descricao", nullable = false, length = 45)
-    //</editor-fold>  
+    //</editor-fold>
     private String descricao;
-
+    
     public TipoEvento() {
     }
 
@@ -95,4 +95,5 @@ public class TipoEvento implements Serializable {
         return true;
     }
 
+    
 }

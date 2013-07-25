@@ -64,16 +64,16 @@ public class EnderecoDAO extends GenericDAO<Endereco> {
         return enderecos;
     }
     
-    public Endereco buscarCep(String cep) {
-        Endereco endereco = null;
+    public List<Endereco> buscarCep(String cep) {
+       List<Endereco> enderecos = null;
         try {
-            endereco = (Endereco) getEntityManager().createNamedQuery("Endereco.findByCep")
+            enderecos = getEntityManager().createNamedQuery("Endereco.findByCep")
                     .setParameter("cep", cep)
-                    .getSingleResult();
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return endereco;
+        return enderecos;
     }
 
     @SuppressWarnings("unchecked")

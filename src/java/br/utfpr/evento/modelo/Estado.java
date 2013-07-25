@@ -29,7 +29,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Estado.findAll", query = "SELECT e FROM Estado e"),
     @NamedQuery(name = "Estado.findById", query = "SELECT e FROM Estado e WHERE e.id = :id"),
-    @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome = :nome"),
+    @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome LIKE :nome"),
     @NamedQuery(name = "Estado.findByUf", query = "SELECT e FROM Estado e WHERE e.uf = :uf")})
 public class Estado implements Serializable {
     
@@ -45,24 +45,24 @@ public class Estado implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 4, max = 20, message = "O tamanho mínimo é 4 e o máximo 20 caracteres.")
+    @NotNull(message = "O campo \"nome\" não deve ser vazio.")
+    @Size(min = 4, max = 20, message = "O campo \"nome\" não deve ter menos que 4 ou mais que 20 caracteres.")
     @Column(name = "nome", nullable = false, length = 20)
     //</editor-fold>
     private String nome;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 2, max = 2, message = "O tamanho do campo é 2 caracteres.")
+    @NotNull(message = "O campo \"UF\" não deve ser vazio.")
+    @Size(min = 2, max = 2)
     @Column(name = "uf", nullable = false, length = 2)
     //</editor-fold>
     private String uf;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estado")
     //</editor-fold>
-    private Collection<Cidade> cidadeCollection;
+    private Collection<Cidade> cidades;
 
     public Estado() {
     }
@@ -101,12 +101,12 @@ public class Estado implements Serializable {
         this.uf = uf;
     }
 
-    public Collection<Cidade> getCidadeCollection() {
-        return cidadeCollection;
+    public Collection<Cidade> getCidades() {
+        return cidades;
     }
 
-    public void setCidadeCollection(Collection<Cidade> cidadeCollection) {
-        this.cidadeCollection = cidadeCollection;
+    public void setCidades(Collection<Cidade> cidades) {
+        this.cidades = cidades;
     }
 
     @Override
@@ -128,5 +128,5 @@ public class Estado implements Serializable {
         }
         return true;
     }
-    
+
 }

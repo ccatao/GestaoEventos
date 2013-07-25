@@ -5,9 +5,7 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -36,7 +33,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Endereco.findByBairro", query = "SELECT e FROM Endereco e WHERE e.bairro LIKE :bairro"),
     @NamedQuery(name = "Endereco.findByCep", query = "SELECT e FROM Endereco e WHERE e.cep = :cep")})
 public class Endereco implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
@@ -49,55 +46,40 @@ public class Endereco implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 10, max = 80, message = "O tamanho mínimo é 10 e o máximo 80 caracteres.")
+    @NotNull(message = "O campo \"descrição\" não deve ser vazio.")
+    @Size(min = 5, max = 80, message = "O campo \"descrição\" não deve ter menos que 5 ou mais que 80 caracteres.")
     @Column(name = "descricao", nullable = false, length = 80)
     //</editor-fold>
     private String descricao;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
+    @NotNull(message = "O campo \"número\" não deve ser vazio. Endereços sem numero inserir 0 (zero)")
     @Column(name = "numero", nullable = false)
     //</editor-fold>
-    private Integer numero;
+    private int numero;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 5, max = 55, message = "O tamanho mínimo é 5 e o máximo 55 caracteres.")
+    @NotNull(message = "O campo \"bairro\" não deve ser vazio.")
+    @Size(min = 5, max = 55, message = "O campo \"bairro\" não deve ter menos que 5 ou mais que 55 caracteres.")
     @Column(name = "bairro", nullable = false, length = 55)
     //</editor-fold>
     private String bairro;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 8, max = 8, message = "O campo deve ter 8 caracteres.")
+    @NotNull(message = "O campo \"CEP\" não deve ser vazio.")
+    @Size(min = 8, max = 8, message = "O campo \"CEP\" não deve ter 8 caracteres. Não digite o traço.")
     @Column(name = "cep", nullable = false, length = 8)
     //</editor-fold>
     private String cep;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotaçães">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
-    //</editor-fold>
-    private Collection<Local> locais;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "cidade_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
-    private Cidade cidadeId;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
-    //</editor-fold>
-    private Collection<Pessoa> pessoas;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoId")
-    //</editor-fold>
-    private Collection<Entidade> entidades;
+    private Cidade cidade;
 
     public Endereco() {
     }
@@ -106,7 +88,7 @@ public class Endereco implements Serializable {
         this.id = id;
     }
 
-    public Endereco(Integer id, String descricao, Integer numero, String bairro, String cep) {
+    public Endereco(Integer id, String descricao, int numero, String bairro, String cep) {
         this.id = id;
         this.descricao = descricao;
         this.numero = numero;
@@ -130,11 +112,11 @@ public class Endereco implements Serializable {
         this.descricao = descricao;
     }
 
-    public Integer getNumero() {
+    public int getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 
@@ -155,37 +137,13 @@ public class Endereco implements Serializable {
     }
 
     public Cidade getCidadeId() {
-        return cidadeId;
+        return cidade;
     }
 
-    public void setCidadeId(Cidade cidadeId) {
-        this.cidadeId = cidadeId;
+    public void setCidadeId(Cidade cidade) {
+        this.cidade = cidade;
     }
-
-    public Collection<Local> getLocais() {
-        return locais;
-    }
-
-    public void setLocais(Collection<Local> locais) {
-        this.locais = locais;
-    }
-
-    public Collection<Pessoa> getPessoas() {
-        return pessoas;
-    }
-
-    public void setPessoas(Collection<Pessoa> pessoas) {
-        this.pessoas = pessoas;
-    }
-
-    public Collection<Entidade> getEntidades() {
-        return entidades;
-    }
-
-    public void setEntidades(Collection<Entidade> entidades) {
-        this.entidades = entidades;
-    }
-    
+   
     @Override
     public int hashCode() {
         int hash = 0;
@@ -205,6 +163,4 @@ public class Endereco implements Serializable {
         }
         return true;
     }
-
-    
 }

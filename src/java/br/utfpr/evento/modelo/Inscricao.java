@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -24,23 +25,32 @@ import javax.validation.constraints.NotNull;
  * @author Cleber
  */
 @Entity
-@Table(name = "tb_inscricao")
+@Table(name = "tb_inscricao", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id"})})
 @NamedQueries({
     @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i"),
-    @NamedQuery(name = "Inscricao.findById", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.id = :id"),
-    @NamedQuery(name = "Inscricao.findByTbEventoId", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.tbEventoId = :tbEventoId"),
-    @NamedQuery(name = "Inscricao.findByTbParticipanteId", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.tbParticipanteId = :tbParticipanteId"),
+    @NamedQuery(name = "Inscricao.findById", query = "SELECT i FROM Inscricao i WHERE i.id = :id"),
+    @NamedQuery(name = "Inscricao.findByEventoId", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.id = :eventoId"),
+    @NamedQuery(name = "Inscricao.findByParticipanteId", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.participante = :participanteId"),
     @NamedQuery(name = "Inscricao.findByQtdatividade", query = "SELECT i FROM Inscricao i WHERE i.qtdatividade = :qtdatividade")})
 public class Inscricao implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
+    //<editor-fold defaultstate="collapsed" desc="anotações">
     @EmbeddedId
+    //</editor-fold>
     protected InscricaoPK inscricaoPK;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull
+    @Column(name = "id", nullable = false)
+    //</editor-fold>
+    private int id;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @Basic(optional = false)
+    @NotNull(message = "O campo \"quantidade\" não deve ser vazio. Preencha a quantidade de atividades que deseja participar.")
     @Column(name = "qtdatividade", nullable = false)
     //</editor-fold>
     private int qtdatividade;
@@ -52,9 +62,15 @@ public class Inscricao implements Serializable {
     @ManyToMany
     //</editor-fold>
     private Collection<Atividade> atividades;
-        
-    //<editor-fold defaultstate="collapsed" desc="anotacões">
-    @JoinColumn(name = "tb_evento_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "participante_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    //</editor-fold>
+    private Pessoa pessoa;
+    
+    //<editor-fold defaultstate="collapsed" desc="anotações">
+    @JoinColumn(name = "evento_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
     private Evento evento;
@@ -66,13 +82,14 @@ public class Inscricao implements Serializable {
         this.inscricaoPK = inscricaoPK;
     }
 
-    public Inscricao(InscricaoPK inscricaoPK, int qtdatividade) {
+    public Inscricao(InscricaoPK inscricaoPK, int id, int qtdatividade) {
         this.inscricaoPK = inscricaoPK;
+        this.id = id;
         this.qtdatividade = qtdatividade;
     }
 
-    public Inscricao(int id, int tbEventoId, int tbParticipanteId) {
-        this.inscricaoPK = new InscricaoPK(id, tbEventoId, tbParticipanteId);
+    public Inscricao(int eventoId, int participanteId) {
+        this.inscricaoPK = new InscricaoPK(eventoId, participanteId);
     }
 
     public InscricaoPK getInscricaoPK() {
@@ -83,6 +100,14 @@ public class Inscricao implements Serializable {
         this.inscricaoPK = inscricaoPK;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getQtdatividade() {
         return qtdatividade;
     }
@@ -91,12 +116,20 @@ public class Inscricao implements Serializable {
         this.qtdatividade = qtdatividade;
     }
 
-    public Collection<Atividade> getAtividades() {
+    public Collection<Atividade> getAtividadeCollection() {
         return atividades;
     }
 
-    public void setAtividades(Collection<Atividade> atividades) {
-        this.atividades = atividades;
+    public void setAtividadeCollection(Collection<Atividade> atividadeCollection) {
+        this.atividades = atividadeCollection;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public Evento getEvento() {

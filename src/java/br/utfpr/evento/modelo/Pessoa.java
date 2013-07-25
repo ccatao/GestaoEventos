@@ -5,21 +5,18 @@
 package br.utfpr.evento.modelo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -30,25 +27,28 @@ import javax.validation.constraints.Size;
 @Table(name = "tb_pessoa")
 @NamedQueries({
     @NamedQuery(name = "Pessoa.findAll", query = "SELECT p FROM Pessoa p"),
-    @NamedQuery(name = "Pessoa.findById", query = "SELECT p FROM Pessoa p WHERE p.pessoaPK.id = :id"),
-    @NamedQuery(name = "Pessoa.findByUsuarioId", query = "SELECT p FROM Pessoa p WHERE p.pessoaPK.usuarioId = :usuarioId"),
+    @NamedQuery(name = "Pessoa.findById", query = "SELECT p FROM Pessoa p WHERE p.id = :id"),
     @NamedQuery(name = "Pessoa.findByNome", query = "SELECT p FROM Pessoa p WHERE p.nome LIKE :nome"),
     @NamedQuery(name = "Pessoa.findByIdade", query = "SELECT p FROM Pessoa p WHERE p.idade = :idade"),
     @NamedQuery(name = "Pessoa.findByCpf", query = "SELECT p FROM Pessoa p WHERE p.cpf = :cpf"),
+    @NamedQuery(name = "Pessoa.findByLogin", query = "SELECT p FROM Pessoa p WHERE p.usuario.login = :login"),
     @NamedQuery(name = "Pessoa.findByIdentificacao", query = "SELECT p FROM Pessoa p WHERE p.identificacao = :identificacao")})
 public class Pessoa implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
     //</editor-fold>
-    protected PessoaPK pessoaPK;
+    private Integer id;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 1, max = 50, message = "Tamanho máximo 50 caracteres")
+    @NotNull(message = "O campo \"nome\" não deve ser vazio.")
+    @Size(min = 10, max = 50, message = "O campo \"nome\" não deve ter menos que 10 ou mais que 50 caracteres.")
     @Column(name = "nome", nullable = false, length = 50)
     //</editor-fold>
     private String nome;
@@ -59,87 +59,59 @@ public class Pessoa implements Serializable {
     private Integer idade;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 10, max = 45, message = "Mínimo 10 e máximo 45 caracteres.")
-    @Column(name = "email", nullable = false, length = 45)
-    //</editor-fold>
-    private String email;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @Basic(optional = false)
-    @NotNull(message = "O campo não pode ficar vazio.")
-    @Size(min = 11, max = 11, message = "O tamanho do campo é 11 caracteres.")
+    @NotNull(message = "O campo \"CPF\" não deve ser vazio.")
+    @Size(min = 11, max = 11, message = "O campo \"CPF\"deve ter 11 caracteres.")
     @Column(name = "cpf", nullable = false, length = 11)
     //</editor-fold>
     private String cpf;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 3, max = 10, message = "Tamanho máximo do campo 10 caracteres.")
+    @NotNull(message = "O campo \"identificador\" não deve ser vazio.")
+    @Size(min = 4, max = 10, message = "O campo \"identificador\" não deve ter menos que 4 ou mais que 10 caracteres.")
     @Column(name = "identificacao", nullable = false, length = 10)
     //</editor-fold>
     private String identificacao;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsavel")
-    //</editor-fold>
-    private Collection<Local> locais;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsavel")
-    //</editor-fold>
-    private Collection<Atividade> atividades;
-    
+       
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
-    private Endereco enderecoId;
+    private Endereco endereco;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "entidade_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     //</editor-fold>
-    private Entidade entidadeId;
+    private Entidade entidade;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
     //</editor-fold>
     private Usuario usuario;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotacões">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoa")
-    //</editor-fold>
-    private Collection<Inscricao> inscricoes;
 
     public Pessoa() {
     }
 
-    public Pessoa(PessoaPK pessoaPK) {
-        this.pessoaPK = pessoaPK;
+    public Pessoa(Integer id) {
+        this.id = id;
     }
 
-    public Pessoa(PessoaPK pessoaPK, String nome, String cpf, String identificacao) {
-        this.pessoaPK = pessoaPK;
+    public Pessoa(Integer id, String nome, String cpf, String identificacao) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.identificacao = identificacao;
     }
 
-    public Pessoa(int id, int usuarioId) {
-        this.pessoaPK = new PessoaPK(id, usuarioId);
+    public Integer getId() {
+        return id;
     }
 
-    public PessoaPK getPessoaPK() {
-        return pessoaPK;
-    }
-
-    public void setPessoaPK(PessoaPK pessoaPK) {
-        this.pessoaPK = pessoaPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -174,20 +146,20 @@ public class Pessoa implements Serializable {
         this.identificacao = identificacao;
     }
 
-    public Endereco getEnderecoId() {
-        return enderecoId;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setEnderecoId(Endereco enderecoId) {
-        this.enderecoId = enderecoId;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
-    public Entidade getEntidadeId() {
-        return entidadeId;
+    public Entidade getEntidade() {
+        return entidade;
     }
 
-    public void setEntidadeId(Entidade entidadeId) {
-        this.entidadeId = entidadeId;
+    public void setEntidade(Entidade entidade) {
+        this.entidade = entidade;
     }
 
     public Usuario getUsuario() {
@@ -198,34 +170,10 @@ public class Pessoa implements Serializable {
         this.usuario = usuario;
     }
 
-    public Collection<Local> getLocais() {
-        return locais;
-    }
-
-    public void setLocais(Collection<Local> locais) {
-        this.locais = locais;
-    }
-
-    public Collection<Atividade> getAtividades() {
-        return atividades;
-    }
-
-    public void setAtividades(Collection<Atividade> atividades) {
-        this.atividades = atividades;
-    }
-
-    public Collection<Inscricao> getInscricoes() {
-        return inscricoes;
-    }
-
-    public void setInscricoes(Collection<Inscricao> inscricoes) {
-        this.inscricoes = inscricoes;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pessoaPK != null ? pessoaPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -236,10 +184,11 @@ public class Pessoa implements Serializable {
             return false;
         }
         Pessoa other = (Pessoa) object;
-        if ((this.pessoaPK == null && other.pessoaPK != null) || (this.pessoaPK != null && !this.pessoaPK.equals(other.pessoaPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
 
+       
 }

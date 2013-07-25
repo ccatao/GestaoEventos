@@ -25,16 +25,19 @@ public class CategoriaDAO extends GenericDAO<Categoria> {
         return categoria;
     }
 
-    public Categoria buscarDescricao(String descricao) {
-        Categoria categoria = null;
+    public List<Categoria> buscarDescricao(String descricao) {
+        List<Categoria> categorias = null;
+        
+        descricao = "%" + descricao + "%";
+        
         try {
-            categoria = (Categoria) getEntityManager().createNamedQuery("Categoria.findByDescricao")
+            categorias = getEntityManager().createNamedQuery("Categoria.findByDescricao")
                     .setParameter("descricao", descricao)
-                    .getSingleResult();
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return categoria;
+        return categorias;
     }
 
     @SuppressWarnings("unchecked")

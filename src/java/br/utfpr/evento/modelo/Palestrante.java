@@ -11,8 +11,15 @@ import javax.persistence.InheritanceType;
  *
  * @author Cleber
  */
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy=InheritanceType.JOINED) 
 public class Palestrante extends Pessoa{
-        
+
+    public String getCodigoIdentificador(){
+        return super.getIdentificacao();
+    }
     
+    public void setCodigoIdentificador(String identificador){
+        super.setIdentificacao(identificador);
+    }
 }
+

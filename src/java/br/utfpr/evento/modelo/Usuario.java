@@ -50,42 +50,27 @@ public class Usuario implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 5, max = 20, message = "Tamanho mínimo 5 e máximo 20 caracteres.")
+    @NotNull(message = "O campo \"login\" não deve ser vazio.")
+    @Size(min = 5, max = 20, message = "O campo \"login\" não deve ter menos que 5 nem mais que 20 caracteres.")
     @Column(name = "login", nullable = false, length = 20)
     //</editor-fold>
     private String login;
     
     //<editor-fold defaultstate="collapsed" desc="anotações">
     @Basic(optional = false)
-    @NotNull(message = "O campo não pode ser vazio.")
-    @Size(min = 5, max = 30, message = "Tamanho mínimo 5 e máximo 30 caracteres.")
+    @NotNull(message = "O campo \"senha\" não deve ser vazio.")
+    @Size(min = 5, max = 30, message = "O campo \"senha\" não deve ter menos que 5 nem mais que 30 caracteres.")
     @Column(name = "senha", nullable = false, length = 30)
     //</editor-fold>
     private String senha;
     
-    //<editor-fold defaultstate="collapsed" desc="anotações">
     @JoinColumn(name = "tipo_usuario_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    //</editor-fold>
-    private TipoUsuario tipoUsuarioId;
+    private TipoUsuario tipoUsuario;
     
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
-    //</editor-fold>
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarios")
     private Collection<Pessoa> pessoas;
     
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsavel")
-    //</editor-fold>
-    private Collection<Evento> eventos;
-    
-    //<editor-fold defaultstate="collapsed" desc="anotações">
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    //</editor-fold>
-    private Collection<Entidade> entidades;
-    
-
     public Usuario() {
     }
 
@@ -124,11 +109,11 @@ public class Usuario implements Serializable {
     }
 
     public TipoUsuario getTipoUsuarioId() {
-        return tipoUsuarioId;
+        return tipoUsuario;
     }
 
     public void setTipoUsuarioId(TipoUsuario tipoUsuarioId) {
-        this.tipoUsuarioId = tipoUsuarioId;
+        this.tipoUsuario = tipoUsuarioId;
     }
 
     public Collection<Pessoa> getPessoas() {
@@ -138,23 +123,6 @@ public class Usuario implements Serializable {
     public void setPessoas(Collection<Pessoa> pessoas) {
         this.pessoas = pessoas;
     }
-
-    public Collection<Evento> getEventos() {
-        return eventos;
-    }
-
-    public void setEventos(Collection<Evento> eventos) {
-        this.eventos = eventos;
-    }
-
-    public Collection<Entidade> getEntidades() {
-        return entidades;
-    }
-
-    public void setEntidades(Collection<Entidade> entidades) {
-        this.entidades = entidades;
-    }
-
    
     @Override
     public int hashCode() {
@@ -174,6 +142,11 @@ public class Usuario implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.utfpr.evento.modelo.Usuario[ id=" + id + " ]";
     }
     
 }
